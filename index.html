@@ -246,30 +246,33 @@
           </div>
         </div>
 
-        <!-- Q3: Projected revenue -->
+        <!-- Q3: Projected revenue (real number input) -->
         <div class="mb-8">
           <label class="block font-semibold text-ink mb-1">What do you realistically expect to bill in the next 12 months?</label>
           <p class="text-sm text-ink-muted mb-3 flex items-start gap-1.5">
-            <span>Best guess. The official Profit First targets shift as a business gets bigger.</span>
+            <span>Best guess in dollars. The Profit First targets shift as a business gets bigger.</span>
             <button type="button" @click="toggleTip('revenue')" class="shrink-0 text-ink-muted hover:text-ink">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"/></svg>
             </button>
           </p>
           <div x-show="tip==='revenue'" x-transition class="mb-3 tooltip-pop bg-white border border-ink-border rounded-xl p-4 text-sm text-ink-body">
-            <p class="mb-2">As revenue grows, Owner's Comp shrinks (you can afford to hire and pay employees from OpEx) and Profit grows. The official targets:</p>
+            <p class="mb-2">As revenue grows, Owner's Comp shrinks (you hire and pay employees from OpEx) and Profit grows. The official Profit First targets:</p>
             <ul class="space-y-1 text-xs">
               <li><strong>$0 to $250K:</strong> Profit 5%, Owner 50%, Tax 15%, OpEx 30%</li>
               <li><strong>$250K to $500K:</strong> Profit 10%, Owner 35%, Tax 15%, OpEx 40%</li>
               <li><strong>$500K to $1M:</strong> Profit 15%, Owner 20%, Tax 15%, OpEx 50%</li>
               <li><strong>$1M+:</strong> Profit 10%, Owner 10%, Tax 15%, OpEx 65%</li>
             </ul>
-            <p class="mt-2 text-coral-dark"><strong>Why Owner's Comp drops:</strong> at higher revenue, the business pays a team out of OpEx instead of relying on you alone. You take less salary but a bigger piece of profit.</p>
           </div>
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            <template x-for="opt in revenueBands" :key="opt.v">
-              <button type="button" @click="answers.revenue=opt.v" :class="answers.revenue===opt.v ? 'bg-ink text-white border-ink' : 'bg-white text-ink border-ink-border hover:border-ink'" class="px-3 py-3 rounded-2xl border-2 font-semibold transition-all text-sm" x-text="opt.l"></button>
-            </template>
+          <div class="relative">
+            <span class="absolute left-5 top-1/2 -translate-y-1/2 text-ink-muted font-semibold text-lg">$</span>
+            <input type="number" min="0" step="1000" x-model.number="answers.revenue" placeholder="90,000" inputmode="numeric" class="w-full pl-9 pr-24 py-4 bg-white rounded-2xl border-2 border-ink-border focus:border-ink focus:outline-none text-lg font-semibold tabular-nums">
+            <span class="absolute right-5 top-1/2 -translate-y-1/2 text-ink-muted text-sm whitespace-nowrap">/ year</span>
           </div>
+          <p x-show="answers.revenue > 0" x-transition class="mt-2.5 text-xs text-ink-muted flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-coral"></span>
+            <span>You're in the <strong class="text-ink" x-text="revenueBandLabel()"></strong> band.</span>
+          </p>
         </div>
 
         <!-- Nav -->
@@ -412,17 +415,36 @@
           </ul>
         </div>
 
-        <!-- Sanity check warnings -->
-        <div x-show="sanityWarnings().length > 0" class="space-y-3 mb-5">
-          <template x-for="(w, i) in sanityWarnings()" :key="i">
-            <div class="bg-coral/10 border border-coral/30 rounded-2xl p-4 text-sm text-ink">
-              <div class="flex items-start gap-2.5">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5 shrink-0 mt-0.5 text-coral-dark"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"/></svg>
-                <span x-html="w"></span>
+        <!-- Pricing red flag (structured math) -->
+        <template x-if="pricingFlag()">
+          <div class="bg-coral/10 border border-coral/30 rounded-2xl p-5 mb-5">
+            <div class="flex items-center gap-2 mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5 text-coral-dark shrink-0"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"/></svg>
+              <p class="font-semibold text-ink">Heads up: pricing won't cover your life</p>
+            </div>
+            <div class="bg-white rounded-xl p-4 mb-3 text-sm space-y-2.5">
+              <div class="flex justify-between items-baseline">
+                <span class="text-ink-muted">Projected revenue</span>
+                <span class="font-semibold text-ink tabular-nums" x-text="formatMoney(pricingFlag().revenue) + ' / yr'"></span>
+              </div>
+              <div class="flex justify-between items-baseline">
+                <span class="text-ink-muted">Your paycheck (<span x-text="pricingFlag().ownerPayPct"></span>% Owner's Comp)</span>
+                <span class="font-semibold text-ink tabular-nums" x-text="formatMoney(pricingFlag().annualOwnerPay) + ' / yr'"></span>
+              </div>
+              <div class="flex justify-between items-baseline">
+                <span class="text-ink-muted">Your cost of living</span>
+                <span class="font-semibold text-ink tabular-nums" x-text="formatMoney(pricingFlag().annualNut) + ' / yr'"></span>
+              </div>
+              <div class="flex justify-between items-baseline pt-2.5 border-t border-ink-border">
+                <span class="font-semibold text-coral-dark">Annual shortfall</span>
+                <span class="font-bold text-coral-dark text-lg tabular-nums" x-text="'-' + formatMoney(pricingFlag().gap)"></span>
               </div>
             </div>
-          </template>
-        </div>
+            <p class="text-xs text-ink-body leading-relaxed">
+              Profit First will <span class="serif-italic">surface</span> this. It won't fix it. Three ways to close the gap: raise prices, lower personal expenses, or fund the gap with outside runway (savings, side income, partner support).
+            </p>
+          </div>
+        </template>
 
         <div class="flex gap-3 pt-2">
           <button @click="back()" class="px-5 py-3.5 text-ink-muted hover:text-ink font-medium">&larr; Back</button>
@@ -595,14 +617,14 @@
               </div>
             </div>
             <div class="flex gap-3">
-              <span class="w-2.5 h-2.5 rounded-full shrink-0 mt-1.5" style="background:#A8CDD7"></span>
+              <span class="w-2.5 h-2.5 rounded-full shrink-0 mt-1.5" style="background:#2E8FB5"></span>
               <div>
                 <div class="font-semibold text-ink mb-0.5">Owner's Comp</div>
                 <p class="text-ink-body leading-relaxed">Your paycheck. <strong>Pay yourself a predictable amount on a predictable schedule</strong>, like a real job. If you're an LLC/sole prop, take draws on the 10th and 25th. If you're an S-corp, fund payroll from this account.</p>
               </div>
             </div>
             <div class="flex gap-3">
-              <span class="w-2.5 h-2.5 rounded-full shrink-0 mt-1.5" style="background:#8AB3BD"></span>
+              <span class="w-2.5 h-2.5 rounded-full shrink-0 mt-1.5" style="background:#F5B948"></span>
               <div>
                 <div class="font-semibold text-ink mb-0.5">Tax</div>
                 <p class="text-ink-body leading-relaxed">Reserved for the IRS, state, and self-employment tax. <strong>Covers both the business's taxes and your personal estimated payments.</strong> Even if you're on payroll with withholding, you keep this account so the business reimburses you. Otherwise withholding feels like a pay cut and the system fails behaviorally.</p>
@@ -793,22 +815,15 @@ function profitFirstApp() {
     accountsPreview: [
       { name: 'Income', desc: 'Holding only. Every deposit lands here. You never spend from it.', color: '#8A8F94' },
       { name: 'Profit', desc: 'Your reward for risk. Hands off, distributed quarterly as your bonus.', color: '#F57F5B' },
-      { name: "Owner's Comp", desc: 'Your paycheck. Predictable, on a schedule, like a real job.', color: '#A8CDD7' },
-      { name: 'Tax', desc: 'Reserved for IRS and state. Pays both business and personal taxes.', color: '#8AB3BD' },
+      { name: "Owner's Comp", desc: 'Your paycheck. Predictable, on a schedule, like a real job.', color: '#2E8FB5' },
+      { name: 'Tax', desc: 'Reserved for IRS and state. Pays both business and personal taxes.', color: '#F5B948' },
       { name: 'Operating Expenses', desc: 'Everything else: gear, software, payroll, ads, supplies.', color: '#2E3C41' },
-    ],
-
-    revenueBands: [
-      { v: 'under100', l: 'Under $100K' },
-      { v: '100to250', l: '$100K to $250K' },
-      { v: '250to500', l: '$250K to $500K' },
-      { v: 'over500', l: '$500K+' },
     ],
 
     editableAccounts: [
       { key: 'profit', name: 'Profit', color: '#F57F5B', hint: 'Your quarterly bonus. Start at 5%, bump 1-2% every quarter.' },
-      { key: 'ownerPay', name: "Owner's Comp", color: '#A8CDD7', hint: 'Your paycheck. Bigger if this is full-time work.' },
-      { key: 'tax', name: 'Tax', color: '#8AB3BD', hint: 'The IRS gets paid no matter what. 15% is the standard target.' },
+      { key: 'ownerPay', name: "Owner's Comp", color: '#2E8FB5', hint: 'Your paycheck. Bigger if this is full-time work.' },
+      { key: 'tax', name: 'Tax', color: '#F5B948', hint: 'The IRS gets paid no matter what. 15% is the standard target.' },
     ],
 
     init() {
@@ -817,6 +832,8 @@ function profitFirstApp() {
         try {
           const s = JSON.parse(saved);
           Object.assign(this.answers, s.answers || {});
+          // Migrate old string-band revenue values to null so user re-enters as a number
+          if (typeof this.answers.revenue !== 'number') this.answers.revenue = null;
           Object.assign(this.custom, s.custom || {});
           if (typeof s.step === 'number') this.step = s.step;
           if (typeof s.depositAmount === 'number') this.depositAmount = s.depositAmount;
@@ -856,19 +873,35 @@ function profitFirstApp() {
     next() { if (this.step < this.totalSteps - 1) this.step++; },
     back() { if (this.step > 0) this.step--; },
 
-    step1Valid() { return this.answers.workType && this.answers.entity && this.answers.revenue; },
+    step1Valid() { return this.answers.workType && this.answers.entity && typeof this.answers.revenue === 'number' && this.answers.revenue > 0; },
     step2Valid() { return this.answers.hasDebt !== null && typeof this.answers.monthlyNut === 'number' && this.answers.monthlyNut >= 0; },
+
+    revenueBand() {
+      const r = this.answers.revenue || 0;
+      if (r >= 1000000) return 'over1m';
+      if (r >= 500000) return '500to1m';
+      if (r >= 250000) return '250to500';
+      return 'under250';
+    },
+
+    revenueBandLabel() {
+      const map = {
+        'under250': 'Under $250K',
+        '250to500': '$250K to $500K',
+        '500to1m': '$500K to $1M',
+        'over1m': '$1M+',
+      };
+      return map[this.revenueBand()] || '';
+    },
 
     computeRecommendation() {
       let profit = 5, ownerPay = 50, tax = 15;
+      const band = this.revenueBand();
 
-      if (this.answers.revenue === 'over500') {
-        profit = 15; ownerPay = 20; tax = 15;
-      } else if (this.answers.revenue === '250to500') {
-        profit = 10; ownerPay = 35; tax = 15;
-      } else {
-        profit = 5; ownerPay = 50; tax = 15;
-      }
+      if (band === 'over1m')        { profit = 10; ownerPay = 10; tax = 15; }
+      else if (band === '500to1m')  { profit = 15; ownerPay = 20; tax = 15; }
+      else if (band === '250to500') { profit = 10; ownerPay = 35; tax = 15; }
+      else                          { profit = 5;  ownerPay = 50; tax = 15; }
 
       if (this.answers.workType === 'sidehustle') {
         profit = Math.max(profit, 15);
@@ -889,8 +922,8 @@ function profitFirstApp() {
     computedAccounts() {
       return [
         { key: 'profit', name: 'Profit', shortName: 'Profit', pct: this.reco.profit, color: '#F57F5B' },
-        { key: 'ownerPay', name: "Owner's Comp", shortName: "Owner's", pct: this.reco.ownerPay, color: '#A8CDD7' },
-        { key: 'tax', name: 'Tax', shortName: 'Tax', pct: this.reco.tax, color: '#8AB3BD' },
+        { key: 'ownerPay', name: "Owner's Comp", shortName: "Owner's", pct: this.reco.ownerPay, color: '#2E8FB5' },
+        { key: 'tax', name: 'Tax', shortName: 'Tax', pct: this.reco.tax, color: '#F5B948' },
         { key: 'opex', name: 'Operating Expenses', shortName: 'OpEx', pct: this.reco.opex, color: '#2E3C41' },
       ];
     },
@@ -900,8 +933,8 @@ function profitFirstApp() {
     computedAccountsCustom() {
       return [
         { key: 'profit', name: 'Profit', shortName: 'Profit', pct: this.custom.profit, color: '#F57F5B' },
-        { key: 'ownerPay', name: "Owner's Comp", shortName: "Owner's", pct: this.custom.ownerPay, color: '#A8CDD7' },
-        { key: 'tax', name: 'Tax', shortName: 'Tax', pct: this.custom.tax, color: '#8AB3BD' },
+        { key: 'ownerPay', name: "Owner's Comp", shortName: "Owner's", pct: this.custom.ownerPay, color: '#2E8FB5' },
+        { key: 'tax', name: 'Tax', shortName: 'Tax', pct: this.custom.tax, color: '#F5B948' },
         { key: 'opex', name: 'Operating Expenses', shortName: 'OpEx', pct: Math.max(0, this.opexComputed()), color: '#2E3C41' },
       ];
     },
@@ -911,25 +944,25 @@ function profitFirstApp() {
     },
 
     recoSubtitle() {
-      const r = this.answers.revenue;
-      const map = { 'under100': 'under $100K', '100to250': '$100K to $250K', '250to500': '$250K to $500K', 'over500': '$500K and up' };
       const wt = this.answers.workType === 'sidehustle' ? 'side hustle' : 'full-time business';
-      return `Tuned for a ${wt} projecting ${map[r] || ''} in year-one revenue.`;
+      return `Tuned for a ${wt} projecting ${this.formatMoney(this.answers.revenue)} in year-one revenue.`;
     },
 
     recoReasons() {
       const reasons = [];
-      const r = this.answers.revenue;
+      const band = this.revenueBand();
 
       if (this.answers.workType === 'sidehustle') {
         reasons.push(`<strong>You said this is a side hustle.</strong> Since a day job covers your life, we bumped <strong style="color:#D96D4D">Profit to ${this.reco.profit}%</strong> and dropped <strong>Owner's Comp to ${this.reco.ownerPay}%</strong>. The business builds wealth instead of replacing your salary.`);
       } else {
-        if (r === 'under100' || r === '100to250') {
+        if (band === 'under250') {
           reasons.push(`<strong>You're starting up.</strong> The official Profit First target for businesses under $250K real revenue is <strong style="color:#D96D4D">5% Profit</strong>, <strong>50% Owner's Comp</strong>, <strong>15% Tax</strong>, <strong>30% OpEx</strong>. The big slice goes to you because, at this stage, there's nobody else to pay.`);
-        } else if (r === '250to500') {
+        } else if (band === '250to500') {
           reasons.push(`<strong>$250K to $500K range.</strong> You can afford to pull more profit out and start absorbing some staff or contractor costs. The book moves you to <strong style="color:#D96D4D">10% Profit</strong>, <strong>35% Owner's Comp</strong>, <strong>40% OpEx</strong>.`);
+        } else if (band === '500to1m') {
+          reasons.push(`<strong>$500K to $1M.</strong> At this stage, the business should fund itself comfortably and your team starts doing the work. <strong style="color:#D96D4D">15% Profit</strong>, <strong>20% Owner's Comp</strong>, <strong>50% OpEx</strong>. More room to hire, less reliance on your single paycheck.`);
         } else {
-          reasons.push(`<strong>$500K+.</strong> At this stage, the business should fund itself comfortably and your team starts doing the work. <strong style="color:#D96D4D">15% Profit</strong>, <strong>20% Owner's Comp</strong>, <strong>50% OpEx</strong>. More room to hire, less reliance on your single paycheck.`);
+          reasons.push(`<strong>$1M+.</strong> The business is funding a real team out of OpEx. Owner's Comp drops to <strong>10%</strong> because payroll covers most labor. Profit holds at <strong style="color:#D96D4D">10%</strong> with <strong>65% OpEx</strong> for staff, gear, and growth.`);
         }
       }
 
@@ -948,22 +981,21 @@ function profitFirstApp() {
       return reasons;
     },
 
-    sanityWarnings() {
-      const warnings = [];
-      if (this.answers.workType === 'fulltime' && this.answers.monthlyNut > 0) {
-        const annualOwnerPay = this.estimatedRevenue() * (this.reco.ownerPay / 100);
-        const annualNut = this.answers.monthlyNut * 12;
-        if (annualOwnerPay < annualNut) {
-          const gap = annualNut - annualOwnerPay;
-          warnings.push(`<strong>Pricing red flag:</strong> at ${this.reco.ownerPay}% Owner's Comp, your projected annual paycheck (~${this.formatMoney(annualOwnerPay)}) doesn't cover your ${this.formatMoney(annualNut)}/yr personal expenses. Gap of ${this.formatMoney(gap)}. Either revenue needs to climb, your minimum nut needs to drop, or you need outside runway. Profit First will surface this. It won't fix it.`);
-        }
-      }
-      return warnings;
-    },
-
-    estimatedRevenue() {
-      const map = { 'under100': 60000, '100to250': 175000, '250to500': 375000, 'over500': 750000 };
-      return map[this.answers.revenue] || 0;
+    pricingFlag() {
+      if (this.answers.workType !== 'fulltime') return null;
+      if (!(this.answers.monthlyNut > 0)) return null;
+      if (!(this.answers.revenue > 0)) return null;
+      const annualOwnerPay = this.answers.revenue * (this.reco.ownerPay / 100);
+      const annualNut = this.answers.monthlyNut * 12;
+      if (annualOwnerPay >= annualNut) return null;
+      return {
+        revenue: this.answers.revenue,
+        ownerPayPct: this.reco.ownerPay,
+        annualOwnerPay,
+        annualNut,
+        monthlyNut: this.answers.monthlyNut,
+        gap: annualNut - annualOwnerPay,
+      };
     },
 
     opexTooLow() { return this.opexComputed() < 25; },

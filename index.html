@@ -319,7 +319,52 @@
             </div>
           </div>
           <div x-show="answers.subPercent >= 20" x-transition class="mt-3 bg-coral/10 border border-coral/30 rounded-2xl p-4 text-sm text-ink">
-            <strong class="text-coral-dark">Heads up:</strong> Your pass-through costs are high enough that running allocations on topline will eventually distort your numbers. Worth adding a separate <span class="serif-italic">Materials &amp; Subs</span> account in 90 days.
+            <p class="leading-relaxed">
+              <strong class="text-coral-dark">Heads up:</strong> Your pass-through costs are high enough that running allocations on topline will eventually distort your numbers. Worth adding a separate <span class="serif-italic">Materials &amp; Subs</span> account in 90 days.
+            </p>
+            <button type="button" @click="toggleTip('subsExplain')" class="mt-2.5 inline-flex items-center gap-1 text-coral-dark hover:text-ink font-semibold text-xs">
+              <span x-text="tip==='subsExplain' ? 'Hide explanation' : 'Show me why'"></span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-3.5 h-3.5 transition-transform" :class="tip==='subsExplain' ? 'rotate-180' : ''"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+            </button>
+            <div x-show="tip==='subsExplain'" x-transition class="mt-4 pt-4 border-t border-coral/30 space-y-4 text-ink-body">
+              <div>
+                <p class="eyebrow text-coral-dark mb-1.5">The Math Problem</p>
+                <p class="leading-relaxed mb-2">Say you book a <strong>$10,000 video project</strong>, but $3,000 goes straight to a freelance editor. You actually keep $7,000.</p>
+                <p class="leading-relaxed mb-2">If you run Profit First on the full $10,000 (topline) at 5/50/15/30:</p>
+                <div class="bg-white rounded-xl p-3 mb-2 space-y-1.5 text-xs tabular-nums">
+                  <div class="flex justify-between"><span class="text-ink-muted">Profit (5%)</span><span class="font-semibold">$500</span></div>
+                  <div class="flex justify-between"><span class="text-ink-muted">Owner's Comp (50%)</span><span class="font-semibold">$5,000</span></div>
+                  <div class="flex justify-between"><span class="text-ink-muted">Tax (15%)</span><span class="font-semibold">$1,500</span></div>
+                  <div class="flex justify-between"><span class="text-ink-muted">OpEx (30%)</span><span class="font-semibold">$3,000</span></div>
+                </div>
+                <p class="leading-relaxed">The editor's $3,000 has to come from OpEx. You cut that check and <strong>OpEx is now $0</strong>, with no money left for rent, software, ads, or anything else until the next allocation. Meanwhile your "5% Profit" is really closer to 7% of what you actually keep. The numbers lie.</p>
+              </div>
+
+              <div>
+                <p class="eyebrow text-coral-dark mb-1.5">The Fix: A 6th Account</p>
+                <p class="leading-relaxed mb-2">Add an account called <strong class="serif-italic">Materials &amp; Subs</strong>. Every deposit gets sliced like this:</p>
+                <ol class="text-xs space-y-1.5 list-decimal pl-5 mb-3 leading-relaxed">
+                  <li><strong>First,</strong> peel off your typical sub % into Materials &amp; Subs (e.g., 30% on every deposit). That money is reserved to pay the freelancers/licenses/talent.</li>
+                  <li><strong>What's left</strong> is your <span class="serif-italic">Real Revenue</span>, money the business actually owns.</li>
+                  <li><strong>Then</strong> apply Profit First percentages to that Real Revenue.</li>
+                </ol>
+                <p class="leading-relaxed mb-2">Same $10K deposit, but with M&amp;S:</p>
+                <div class="bg-white rounded-xl p-3 space-y-1.5 text-xs tabular-nums">
+                  <div class="flex justify-between"><span class="text-ink-muted">Materials &amp; Subs (30%)</span><span class="font-semibold">$3,000</span></div>
+                  <div class="flex justify-between border-t border-ink-border pt-1.5"><span class="text-ink-muted">Real Revenue</span><span class="font-semibold">$7,000</span></div>
+                  <div class="flex justify-between pl-3"><span class="text-ink-muted">&rarr; Profit (5%)</span><span class="font-semibold">$350</span></div>
+                  <div class="flex justify-between pl-3"><span class="text-ink-muted">&rarr; Owner's Comp (50%)</span><span class="font-semibold">$3,500</span></div>
+                  <div class="flex justify-between pl-3"><span class="text-ink-muted">&rarr; Tax (15%)</span><span class="font-semibold">$1,050</span></div>
+                  <div class="flex justify-between pl-3"><span class="text-ink-muted">&rarr; OpEx (30%)</span><span class="font-semibold">$2,100</span></div>
+                </div>
+                <p class="leading-relaxed mt-2">OpEx is now <strong>$2,100 of clean operating money</strong> instead of $0. Profit is honestly 5% of what you keep. The system tells the truth.</p>
+              </div>
+
+              <div>
+                <p class="eyebrow text-coral-dark mb-1.5">When to Add It</p>
+                <p class="leading-relaxed">Either <strong>in 90 days</strong> (once you've got the 5-account rhythm down), or <strong>right now</strong> if you'd rather set it up correctly from day one. Both are valid. Adding it later is fine; just be aware your topline numbers will be slightly optimistic until you do.</p>
+              </div>
+            </div>
           </div>
         </div>
 

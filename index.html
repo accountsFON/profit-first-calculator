@@ -3,88 +3,108 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<meta name="theme-color" content="#0f172a" />
-<title>Profit First Calculator</title>
-<meta name="description" content="A Profit First starter calculator. Answer a few questions, get your starting bank-account allocations." />
+<meta name="theme-color" content="#2E3C41" />
+<title>Profit First Calculator | Five One Nine Marketing</title>
+<meta name="description" content="A guided walkthrough of the Profit First system. Answer a few questions, learn the method, and get your starting bank-account allocations." />
+<link rel="icon" href="assets/fon-logo.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
-<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          slate: { 50:'#F4F8FA', 100:'#E8F1F4', 200:'#CBE1E8', 300:'#A8CDD7', 400:'#8AB3BD', 500:'#6E9AA5', 600:'#557F8A', 700:'#43626B' },
+          coral: { DEFAULT:'#F57F5B', dark:'#D96D4D', light:'#FAA890' },
+          ink: { DEFAULT:'#2E3C41', surface:'#364449', body:'#414042', muted:'#8A8F94', border:'#E2E5E8' },
+          cream: { DEFAULT:'#F8F8F8', off:'#FAFAF8' },
+        },
+        fontFamily: {
+          sans: ['Poppins', 'system-ui', 'sans-serif'],
+          serif: ['Lora', 'Georgia', 'serif'],
+        },
+        borderRadius: { 'pill': '9999px' },
+        letterSpacing: { 'eyebrow': '0.12em' },
+      }
+    }
+  }
+</script>
 <style>
   html, body { -webkit-font-smoothing: antialiased; }
-  body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
-  .serif { font-family: 'DM Serif Display', Georgia, serif; letter-spacing: -0.01em; }
-  /* iOS safe areas */
+  body { font-family: 'Poppins', system-ui, sans-serif; color: #414042; background: #F8F8F8; }
+  .serif { font-family: 'Lora', Georgia, serif; }
+  .serif-italic { font-family: 'Lora', Georgia, serif; font-style: italic; }
+  .eyebrow { font-family: 'Poppins', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; font-size: 11px; }
   .safe-top { padding-top: env(safe-area-inset-top); }
   .safe-bot { padding-bottom: env(safe-area-inset-bottom); }
-  /* Custom range slider */
+  /* Range slider */
   input[type="range"] {
-    -webkit-appearance: none;
-    appearance: none;
-    height: 6px;
-    border-radius: 9999px;
-    background: #e2e8f0;
-    outline: none;
+    -webkit-appearance: none; appearance: none;
+    height: 6px; border-radius: 9999px; background: #E2E5E8; outline: none;
   }
   input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 26px;
-    height: 26px;
-    border-radius: 9999px;
-    background: #fff;
-    border: 2px solid currentColor;
-    cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+    -webkit-appearance: none; appearance: none;
+    width: 28px; height: 28px; border-radius: 9999px;
+    background: #fff; border: 3px solid #F57F5B; cursor: pointer;
+    box-shadow: 0 2px 6px rgba(46,60,65,0.18);
     transition: transform 0.1s;
   }
   input[type="range"]::-webkit-slider-thumb:active { transform: scale(1.1); }
   input[type="range"]::-moz-range-thumb {
-    width: 26px;
-    height: 26px;
-    border-radius: 9999px;
-    background: #fff;
-    border: 2px solid currentColor;
-    cursor: pointer;
+    width: 28px; height: 28px; border-radius: 9999px;
+    background: #fff; border: 3px solid #F57F5B; cursor: pointer;
   }
-  /* Smooth transitions between steps */
   [x-cloak] { display: none !important; }
   .fade-enter { animation: fade 0.3s ease-out; }
   @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-  /* Tooltip popover */
-  .tooltip-pop { box-shadow: 0 10px 30px rgba(15,23,42,0.12), 0 2px 8px rgba(15,23,42,0.06); }
-  /* Subtle scrollbar */
+  .tooltip-pop { box-shadow: 0 8px 24px rgba(46,60,65,0.10), 0 2px 6px rgba(46,60,65,0.06); }
+  /* Hand-drawn underline (coral) */
+  .underline-hand {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 8'%3E%3Cpath d='M2,5 Q50,1 100,4 T198,3' fill='none' stroke='%23F57F5B' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: 0 100%;
+    background-size: 100% 8px; padding-bottom: 8px;
+  }
+  /* Grain overlay for slate gradient panels */
+  .grain {
+    position: relative; isolation: isolate;
+  }
+  .grain::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.18 0 0 0 0 0.24 0 0 0 0 0.25 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+    opacity: 0.10; mix-blend-mode: multiply; border-radius: inherit;
+  }
   ::-webkit-scrollbar { width: 8px; height: 8px; }
-  ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+  ::-webkit-scrollbar-thumb { background: #CBE1E8; border-radius: 9999px; }
+  /* Print styles */
+  @media print {
+    header, footer, .no-print { display: none !important; }
+    body { background: white; }
+    section { display: block !important; }
+  }
 </style>
 </head>
-<body class="bg-stone-50 text-slate-900 min-h-screen safe-top safe-bot">
+<body class="bg-cream text-ink-body min-h-screen safe-top safe-bot">
 <div x-data="profitFirstApp()" x-init="init()" x-cloak class="min-h-screen flex flex-col">
 
   <!-- Top bar -->
-  <header class="px-5 sm:px-8 py-5 border-b border-slate-200/70 bg-white/80 backdrop-blur sticky top-0 z-30">
+  <header class="px-5 sm:px-8 py-4 border-b border-ink-border bg-white sticky top-0 z-30 no-print">
     <div class="max-w-2xl mx-auto flex items-center justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center shadow-sm">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-        </div>
-        <div>
-          <div class="font-semibold text-slate-900 leading-tight">Profit First</div>
-          <div class="text-xs text-slate-500 leading-tight">Starter Calculator</div>
-        </div>
-      </div>
-      <button @click="resetAll()" x-show="step > 0" class="text-xs text-slate-500 hover:text-slate-900 underline-offset-2 hover:underline">
+      <a href="https://fonmarketing.com" target="_blank" rel="noopener" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+        <img src="assets/fon-logo.png" alt="Five One Nine Marketing" class="h-8 sm:h-9 w-auto" />
+      </a>
+      <button @click="resetAll()" x-show="step > 0" class="text-xs text-ink-muted hover:text-ink underline-offset-2 hover:underline">
         Start over
       </button>
     </div>
     <!-- Progress bar -->
     <div class="max-w-2xl mx-auto mt-4">
-      <div class="h-1 bg-slate-200 rounded-full overflow-hidden">
-        <div class="h-full bg-gradient-to-r from-emerald-500 to-emerald-600 transition-all duration-500 ease-out" :style="`width: ${((step+1)/totalSteps)*100}%`"></div>
+      <div class="h-1 bg-ink-border rounded-pill overflow-hidden">
+        <div class="h-full bg-coral transition-all duration-500 ease-out" :style="`width: ${((step+1)/totalSteps)*100}%`"></div>
       </div>
-      <div class="flex justify-between text-[10px] uppercase tracking-wider text-slate-400 mt-2">
-        <span>Step <span x-text="step+1"></span> of <span x-text="totalSteps"></span></span>
+      <div class="flex justify-between eyebrow text-ink-muted mt-2">
+        <span>Step <span x-text="step+1"></span> / <span x-text="totalSteps"></span></span>
         <span x-text="stepName()"></span>
       </div>
     </div>
@@ -93,38 +113,74 @@
   <main class="flex-1 px-5 sm:px-8 py-8 sm:py-12">
     <div class="max-w-2xl mx-auto">
 
-      <!-- ====== STEP 0: WELCOME ====== -->
+      <!-- ====== STEP 0: WELCOME + EDUCATIONAL PRIMER ====== -->
       <section x-show="step===0" class="fade-enter">
-        <p class="text-xs font-semibold text-emerald-700 uppercase tracking-widest mb-3">Profit First, plain English</p>
-        <h1 class="serif text-4xl sm:text-5xl text-slate-900 leading-tight mb-5">
-          Take profit off the top. Run the business on what's left.
+        <div class="flex items-center gap-2 mb-4">
+          <span class="w-6 h-px bg-coral"></span>
+          <span class="eyebrow text-coral">Profit First, in Plain English</span>
+        </div>
+        <h1 class="text-4xl sm:text-5xl text-ink leading-[1.1] mb-6 font-semibold">
+          Take <span class="serif-italic font-medium underline-hand">profit</span> off the top.
+          <br/>Run the business on what's left.
         </h1>
-        <p class="text-slate-600 text-lg leading-relaxed mb-8">
-          Most businesses use the formula <span class="font-semibold text-slate-900">Sales minus Expenses equals Profit</span>, and end up with nothing left over. Profit First flips it: <span class="font-semibold text-slate-900">Sales minus Profit equals Expenses</span>. You divide every deposit into separate accounts before you spend a dollar.
+        <p class="text-ink-body text-lg leading-relaxed mb-6">
+          Most small businesses use the formula <strong class="text-ink">Sales minus Expenses equals Profit</strong>, and end up with no profit at all. That's not a math problem. That's a <span class="serif-italic">behavior</span> problem.
+        </p>
+        <p class="text-ink-body text-base leading-relaxed mb-8">
+          Profit First flips the formula: <strong class="text-ink">Sales minus Profit equals Expenses</strong>. Every deposit gets sliced into separate accounts <span class="serif-italic">before</span> you spend a dollar. Profit, owner's pay, and taxes get protected first. What's left is what runs the business.
         </p>
 
-        <div class="grid sm:grid-cols-2 gap-3 mb-8">
-          <template x-for="acct in accountsPreview" :key="acct.name">
-            <div class="bg-white rounded-2xl p-4 border border-slate-200/70">
-              <div class="flex items-center gap-2 mb-1">
-                <span class="w-2.5 h-2.5 rounded-full" :style="`background:${acct.color}`"></span>
-                <span class="font-semibold text-slate-900" x-text="acct.name"></span>
-              </div>
-              <p class="text-sm text-slate-500" x-text="acct.desc"></p>
-            </div>
-          </template>
-        </div>
-
-        <div class="bg-emerald-50 border border-emerald-200/70 rounded-2xl p-5 mb-8">
-          <div class="flex items-start gap-3">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5 text-emerald-700 mt-0.5 shrink-0"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
-            <p class="text-sm text-emerald-900 leading-relaxed">
-              This calculator gives you <strong>starting</strong> percentages based on your situation. You'll re-tune them every 90 days as the business grows. There's no perfect number on day one. The discipline is the point.
+        <!-- The Big Idea -->
+        <div class="relative bg-gradient-to-br from-slate-300 to-slate-200 rounded-2xl p-6 sm:p-7 mb-8 grain">
+          <div class="relative z-10">
+            <p class="eyebrow text-ink mb-3">The Big Idea: Small Plates</p>
+            <p class="text-ink leading-relaxed mb-3">
+              When you eat off a giant platter, you fill the platter. When you eat off a small plate, your portion looks normal and you eat less. Same food, different container.
+            </p>
+            <p class="text-ink leading-relaxed">
+              One giant operating account is a giant platter. Profit First gives your business <span class="serif-italic font-medium">smaller plates</span>. The money for profit, taxes, and your paycheck is physically out of reach, so the business runs lean by design instead of by willpower.
             </p>
           </div>
         </div>
 
-        <button @click="next()" class="w-full sm:w-auto px-7 py-4 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl font-semibold transition-all shadow-sm hover:shadow active:scale-[0.99]">
+        <!-- Five accounts preview -->
+        <p class="eyebrow text-ink-muted mb-3">The Five Accounts</p>
+        <div class="grid sm:grid-cols-2 gap-3 mb-8">
+          <template x-for="acct in accountsPreview" :key="acct.name">
+            <div class="bg-white rounded-2xl p-5 border border-ink-border">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="w-2.5 h-2.5 rounded-full" :style="`background:${acct.color}`"></span>
+                <span class="font-semibold text-ink" x-text="acct.name"></span>
+              </div>
+              <p class="text-sm text-ink-body leading-relaxed" x-text="acct.desc"></p>
+            </div>
+          </template>
+        </div>
+
+        <!-- What you'll learn -->
+        <div class="bg-white border border-ink-border rounded-2xl p-5 mb-8">
+          <p class="eyebrow text-ink-muted mb-3">What this calculator does</p>
+          <ul class="space-y-2.5 text-sm text-ink-body">
+            <li class="flex items-start gap-2.5">
+              <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-coral shrink-0"></span>
+              <span>Walks you through the system in plain English (no accounting jargon)</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-coral shrink-0"></span>
+              <span>Asks six short questions about your situation</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-coral shrink-0"></span>
+              <span>Recommends starting allocations with a clear explanation of <span class="serif-italic">why</span> each number</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-coral shrink-0"></span>
+              <span>Gives you the operational playbook: bank setup, allocation rhythm, quarterly distributions, and the rules that make it stick</span>
+            </li>
+          </ul>
+        </div>
+
+        <button @click="next()" class="w-full sm:w-auto px-8 py-4 bg-coral hover:bg-coral-dark text-white rounded-pill font-semibold transition-all shadow-sm hover:shadow active:scale-[0.99]">
           Let's set it up
           <span class="ml-1.5">&rarr;</span>
         </button>
@@ -132,83 +188,90 @@
 
       <!-- ====== STEP 1: ABOUT THE BUSINESS ====== -->
       <section x-show="step===1" class="fade-enter">
-        <p class="text-xs font-semibold text-emerald-700 uppercase tracking-widest mb-3">About your business</p>
-        <h2 class="serif text-3xl sm:text-4xl text-slate-900 leading-tight mb-6">A few quick basics.</h2>
+        <div class="flex items-center gap-2 mb-4">
+          <span class="w-6 h-px bg-coral"></span>
+          <span class="eyebrow text-coral">About Your Business</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl text-ink leading-tight mb-3 font-semibold">A few quick basics.</h2>
+        <p class="text-ink-body mb-8">Three short questions. Your answers shift the recommended percentages, since a side hustle and a full-time business need very different allocations.</p>
 
         <!-- Q1: Work type -->
         <div class="mb-8">
-          <label class="block font-semibold text-slate-900 mb-1">Is this your full-time gig?</label>
-          <p class="text-sm text-slate-500 mb-3 flex items-start gap-1.5">
+          <label class="block font-semibold text-ink mb-1">Is this your full-time gig?</label>
+          <p class="text-sm text-ink-muted mb-3 flex items-start gap-1.5">
             <span>This shifts how much money goes to your paycheck vs. profit and runway.</span>
-            <button type="button" @click="toggleTip('worktype')" class="shrink-0 text-slate-400 hover:text-slate-700">
+            <button type="button" @click="toggleTip('worktype')" class="shrink-0 text-ink-muted hover:text-ink">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"/></svg>
             </button>
           </p>
-          <div x-show="tip==='worktype'" x-transition class="mb-3 tooltip-pop bg-white border border-slate-200 rounded-xl p-4 text-sm text-slate-700">
-            <p class="mb-2"><strong>Full-time:</strong> The business pays your bills. Owner's Pay needs to be substantial.</p>
-            <p><strong>Side hustle:</strong> A day job covers your life. The business can route more money into Profit, gear, and growth instead of paychecks.</p>
+          <div x-show="tip==='worktype'" x-transition class="mb-3 tooltip-pop bg-white border border-ink-border rounded-xl p-4 text-sm text-ink-body">
+            <p class="mb-2"><strong>Full-time:</strong> The business has to pay your bills. Owner's Comp needs to be substantial, around 50% of revenue when you're starting out.</p>
+            <p class="mb-2"><strong>Side hustle:</strong> A day job covers your life. The business can route more money into Profit, gear, and growth instead of paychecks. We'll bump Profit up and shrink Owner's Comp.</p>
+            <p>Either way, you should still pay yourself. The Owner's Comp account exists even if you "don't need the money" right now. Habits compound.</p>
           </div>
           <div class="grid grid-cols-2 gap-3">
-            <button type="button" @click="answers.workType='fulltime'" :class="answers.workType==='fulltime' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-900 border-slate-200 hover:border-slate-400'" class="px-4 py-4 rounded-2xl border-2 font-semibold transition-all text-left">
-              <div class="text-sm opacity-70 font-normal">Full-time</div>
-              <div>Main income</div>
+            <button type="button" @click="answers.workType='fulltime'" :class="answers.workType==='fulltime' ? 'bg-ink text-white border-ink' : 'bg-white text-ink border-ink-border hover:border-ink'" class="px-4 py-4 rounded-2xl border-2 font-semibold transition-all text-left">
+              <div class="text-xs opacity-70 font-normal eyebrow">Full-time</div>
+              <div class="mt-1">Main income</div>
             </button>
-            <button type="button" @click="answers.workType='sidehustle'" :class="answers.workType==='sidehustle' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-900 border-slate-200 hover:border-slate-400'" class="px-4 py-4 rounded-2xl border-2 font-semibold transition-all text-left">
-              <div class="text-sm opacity-70 font-normal">Side hustle</div>
-              <div>Day job covers life</div>
+            <button type="button" @click="answers.workType='sidehustle'" :class="answers.workType==='sidehustle' ? 'bg-ink text-white border-ink' : 'bg-white text-ink border-ink-border hover:border-ink'" class="px-4 py-4 rounded-2xl border-2 font-semibold transition-all text-left">
+              <div class="text-xs opacity-70 font-normal eyebrow">Side hustle</div>
+              <div class="mt-1">Day job covers life</div>
             </button>
           </div>
         </div>
 
         <!-- Q2: Entity type -->
         <div class="mb-8">
-          <label class="block font-semibold text-slate-900 mb-1">How is the business structured?</label>
-          <p class="text-sm text-slate-500 mb-3 flex items-start gap-1.5">
-            <span>This shapes how taxes flow.</span>
-            <button type="button" @click="toggleTip('entity')" class="shrink-0 text-slate-400 hover:text-slate-700">
+          <label class="block font-semibold text-ink mb-1">How is the business structured?</label>
+          <p class="text-sm text-ink-muted mb-3 flex items-start gap-1.5">
+            <span>This shapes how taxes flow through to you.</span>
+            <button type="button" @click="toggleTip('entity')" class="shrink-0 text-ink-muted hover:text-ink">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"/></svg>
             </button>
           </p>
-          <div x-show="tip==='entity'" x-transition class="mb-3 tooltip-pop bg-white border border-slate-200 rounded-xl p-4 text-sm text-slate-700">
-            <p class="mb-2"><strong>Sole Prop / single-member LLC:</strong> Profits flow to your personal taxes. The Tax account funds your quarterly estimateds.</p>
-            <p class="mb-2"><strong>S-Corp:</strong> You're on payroll. Tax is withheld from your paycheck, but you still keep a Tax account so the business can reimburse you for personal estimated payments and avoid the "feels like a pay cut" trap.</p>
-            <p>Either way, the 15% Tax allocation stays.</p>
+          <div x-show="tip==='entity'" x-transition class="mb-3 tooltip-pop bg-white border border-ink-border rounded-xl p-4 text-sm text-ink-body">
+            <p class="mb-2"><strong>Sole Prop / single-member LLC:</strong> Profits flow to your personal taxes. The Tax account funds your quarterly estimated payments to the IRS.</p>
+            <p class="mb-2"><strong>S-Corp:</strong> You're on payroll, taxes withheld from your paycheck. You <span class="serif-italic">still</span> keep a Tax account so the business reimburses you for personal estimateds. If you don't, withholding feels like a pay cut and you'll resent the system.</p>
+            <p>Bottom line: the 15% Tax allocation stays no matter the entity. The behavior matters more than the bookkeeping mechanics.</p>
           </div>
           <div class="grid grid-cols-3 gap-2">
             <template x-for="opt in [{v:'soleprop', l:'Sole Prop'},{v:'llc', l:'LLC'},{v:'scorp', l:'S-Corp'}]" :key="opt.v">
-              <button type="button" @click="answers.entity=opt.v" :class="answers.entity===opt.v ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-900 border-slate-200 hover:border-slate-400'" class="px-3 py-3 rounded-2xl border-2 font-semibold transition-all text-sm" x-text="opt.l"></button>
+              <button type="button" @click="answers.entity=opt.v" :class="answers.entity===opt.v ? 'bg-ink text-white border-ink' : 'bg-white text-ink border-ink-border hover:border-ink'" class="px-3 py-3 rounded-2xl border-2 font-semibold transition-all text-sm" x-text="opt.l"></button>
             </template>
           </div>
         </div>
 
         <!-- Q3: Projected revenue -->
         <div class="mb-8">
-          <label class="block font-semibold text-slate-900 mb-1">What do you realistically expect to bill in the next 12 months?</label>
-          <p class="text-sm text-slate-500 mb-3 flex items-start gap-1.5">
+          <label class="block font-semibold text-ink mb-1">What do you realistically expect to bill in the next 12 months?</label>
+          <p class="text-sm text-ink-muted mb-3 flex items-start gap-1.5">
             <span>Best guess. The official Profit First targets shift as a business gets bigger.</span>
-            <button type="button" @click="toggleTip('revenue')" class="shrink-0 text-slate-400 hover:text-slate-700">
+            <button type="button" @click="toggleTip('revenue')" class="shrink-0 text-ink-muted hover:text-ink">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"/></svg>
             </button>
           </p>
-          <div x-show="tip==='revenue'" x-transition class="mb-3 tooltip-pop bg-white border border-slate-200 rounded-xl p-4 text-sm text-slate-700">
-            <p class="mb-2">As revenue grows, Owner's Pay shrinks (you can hire help), and Profit grows. The official targets:</p>
+          <div x-show="tip==='revenue'" x-transition class="mb-3 tooltip-pop bg-white border border-ink-border rounded-xl p-4 text-sm text-ink-body">
+            <p class="mb-2">As revenue grows, Owner's Comp shrinks (you can afford to hire and pay employees from OpEx) and Profit grows. The official targets:</p>
             <ul class="space-y-1 text-xs">
-              <li>$0 to $250K: Profit 5%, Owner 50%, Tax 15%, OpEx 30%</li>
-              <li>$250K to $500K: Profit 10%, Owner 35%, Tax 15%, OpEx 40%</li>
-              <li>$500K+: Profit 15%, Owner 20%, Tax 15%, OpEx 50%</li>
+              <li><strong>$0 to $250K:</strong> Profit 5%, Owner 50%, Tax 15%, OpEx 30%</li>
+              <li><strong>$250K to $500K:</strong> Profit 10%, Owner 35%, Tax 15%, OpEx 40%</li>
+              <li><strong>$500K to $1M:</strong> Profit 15%, Owner 20%, Tax 15%, OpEx 50%</li>
+              <li><strong>$1M+:</strong> Profit 10%, Owner 10%, Tax 15%, OpEx 65%</li>
             </ul>
+            <p class="mt-2 text-coral-dark"><strong>Why Owner's Comp drops:</strong> at higher revenue, the business pays a team out of OpEx instead of relying on you alone. You take less salary but a bigger piece of profit.</p>
           </div>
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
             <template x-for="opt in revenueBands" :key="opt.v">
-              <button type="button" @click="answers.revenue=opt.v" :class="answers.revenue===opt.v ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-900 border-slate-200 hover:border-slate-400'" class="px-3 py-3 rounded-2xl border-2 font-semibold transition-all text-sm" x-text="opt.l"></button>
+              <button type="button" @click="answers.revenue=opt.v" :class="answers.revenue===opt.v ? 'bg-ink text-white border-ink' : 'bg-white text-ink border-ink-border hover:border-ink'" class="px-3 py-3 rounded-2xl border-2 font-semibold transition-all text-sm" x-text="opt.l"></button>
             </template>
           </div>
         </div>
 
         <!-- Nav -->
         <div class="flex gap-3 pt-2">
-          <button @click="back()" class="px-5 py-3.5 text-slate-600 hover:text-slate-900 font-medium">&larr; Back</button>
-          <button @click="next()" :disabled="!step1Valid()" :class="step1Valid() ? 'bg-slate-900 hover:bg-slate-800' : 'bg-slate-300 cursor-not-allowed'" class="flex-1 sm:flex-none sm:ml-auto px-7 py-4 text-white rounded-2xl font-semibold transition-all">
+          <button @click="back()" class="px-5 py-3.5 text-ink-muted hover:text-ink font-medium">&larr; Back</button>
+          <button @click="next()" :disabled="!step1Valid()" :class="step1Valid() ? 'bg-coral hover:bg-coral-dark' : 'bg-ink-border cursor-not-allowed'" class="flex-1 sm:flex-none sm:ml-auto px-8 py-4 text-white rounded-pill font-semibold transition-all">
             Continue
             <span class="ml-1.5">&rarr;</span>
           </button>
@@ -217,79 +280,84 @@
 
       <!-- ====== STEP 2: ABOUT THE WORK ====== -->
       <section x-show="step===2" class="fade-enter">
-        <p class="text-xs font-semibold text-emerald-700 uppercase tracking-widest mb-3">About your work</p>
-        <h2 class="serif text-3xl sm:text-4xl text-slate-900 leading-tight mb-6">Now the financial reality.</h2>
+        <div class="flex items-center gap-2 mb-4">
+          <span class="w-6 h-px bg-coral"></span>
+          <span class="eyebrow text-coral">About Your Work</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl text-ink leading-tight mb-3 font-semibold">Now the financial reality.</h2>
+        <p class="text-ink-body mb-8">Three more questions. These help us spot pricing problems and tune the recommendation to your situation.</p>
 
         <!-- Q4: Sub costs -->
         <div class="mb-8">
-          <label class="block font-semibold text-slate-900 mb-1">On a typical project, what % goes to OTHER people you pay per-job?</label>
-          <p class="text-sm text-slate-500 mb-3 flex items-start gap-1.5">
+          <label class="block font-semibold text-ink mb-1">On a typical project, what % goes to OTHER people you pay per-job?</label>
+          <p class="text-sm text-ink-muted mb-3 flex items-start gap-1.5">
             <span>Editors, second shooters, motion graphics, sound, drone ops, talent, location fees, music licenses, stock footage.</span>
-            <button type="button" @click="toggleTip('subs')" class="shrink-0 text-slate-400 hover:text-slate-700">
+            <button type="button" @click="toggleTip('subs')" class="shrink-0 text-ink-muted hover:text-ink">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"/></svg>
             </button>
           </p>
-          <div x-show="tip==='subs'" x-transition class="mb-3 tooltip-pop bg-white border border-slate-200 rounded-xl p-4 text-sm text-slate-700">
+          <div x-show="tip==='subs'" x-transition class="mb-3 tooltip-pop bg-white border border-ink-border rounded-xl p-4 text-sm text-ink-body">
             <p class="mb-2"><strong>What counts:</strong> anyone paid per-project (1099 contractors), plus pass-through costs like locations, talent fees, license fees, and stock assets.</p>
-            <p><strong>What doesn't count:</strong> your own labor, full-time employees, software subscriptions, gear you own. Those are operating expenses.</p>
-            <p class="mt-2 text-emerald-700">If this number creeps above 20%, you may want to add a separate Materials &amp; Subs account later. For now, we'll work with your 5-account setup.</p>
+            <p class="mb-2"><strong>What doesn't count:</strong> your own labor, full-time employees, software subscriptions, gear you own. Those are operating expenses.</p>
+            <p>This concept is called <span class="serif-italic">Real Revenue</span> in the book: total income minus materials and subs. If your subs are above 20% of a typical job, your topline numbers will eventually mislead you. We'll flag it if so.</p>
           </div>
-          <div class="bg-white rounded-2xl border border-slate-200 p-5">
+          <div class="bg-white rounded-2xl border border-ink-border p-5">
             <div class="flex items-baseline justify-between mb-3">
-              <span class="text-sm text-slate-500">Sub / pass-through %</span>
-              <span class="text-3xl font-bold text-slate-900 tabular-nums"><span x-text="answers.subPercent"></span>%</span>
+              <span class="text-sm text-ink-muted">Sub / pass-through %</span>
+              <span class="text-3xl font-bold text-ink tabular-nums"><span x-text="answers.subPercent"></span>%</span>
             </div>
-            <input type="range" min="0" max="50" step="1" x-model.number="answers.subPercent" class="w-full text-emerald-600">
-            <div class="flex justify-between text-[11px] text-slate-400 mt-2">
+            <input type="range" min="0" max="50" step="1" x-model.number="answers.subPercent" class="w-full">
+            <div class="flex justify-between text-[11px] text-ink-muted mt-2">
               <span>0%</span><span>25%</span><span>50%</span>
             </div>
           </div>
-          <div x-show="answers.subPercent >= 20" x-transition class="mt-3 bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-900">
-            <strong>Heads up:</strong> Your pass-through costs are high. Your numbers will lie to you over time without a separate Materials &amp; Subs account. Worth revisiting in 90 days.
+          <div x-show="answers.subPercent >= 20" x-transition class="mt-3 bg-coral/10 border border-coral/30 rounded-2xl p-4 text-sm text-ink">
+            <strong class="text-coral-dark">Heads up:</strong> Your pass-through costs are high enough that running allocations on topline will eventually distort your numbers. Worth adding a separate <span class="serif-italic">Materials &amp; Subs</span> account in 90 days.
           </div>
         </div>
 
         <!-- Q5: Debt -->
         <div class="mb-8">
-          <label class="block font-semibold text-slate-900 mb-1">Any business debt going in?</label>
-          <p class="text-sm text-slate-500 mb-3 flex items-start gap-1.5">
+          <label class="block font-semibold text-ink mb-1">Any business debt going in?</label>
+          <p class="text-sm text-ink-muted mb-3 flex items-start gap-1.5">
             <span>Credit cards, equipment loans, SBA, family loans.</span>
-            <button type="button" @click="toggleTip('debt')" class="shrink-0 text-slate-400 hover:text-slate-700">
+            <button type="button" @click="toggleTip('debt')" class="shrink-0 text-ink-muted hover:text-ink">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"/></svg>
             </button>
           </p>
-          <div x-show="tip==='debt'" x-transition class="mb-3 tooltip-pop bg-white border border-slate-200 rounded-xl p-4 text-sm text-slate-700">
-            <p>If yes, your quarterly Profit distribution flips to <strong>debt-snowball mode</strong>: 95% attacks your smallest debt, 5% is yours to celebrate. You keep 100% of the profit habit alive while killing debt fast.</p>
+          <div x-show="tip==='debt'" x-transition class="mb-3 tooltip-pop bg-white border border-ink-border rounded-xl p-4 text-sm text-ink-body">
+            <p class="mb-2">If yes, your quarterly Profit distribution flips to <strong>debt-snowball mode</strong>: 95% attacks your smallest debt, 5% is yours to celebrate. You keep the profit habit alive while killing debt fast.</p>
+            <p>Why smallest first instead of highest interest? Behavioral. Quick wins build momentum. The math difference is small; the habit difference is huge.</p>
           </div>
           <div class="grid grid-cols-2 gap-3">
-            <button type="button" @click="answers.hasDebt=false" :class="answers.hasDebt===false ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-900 border-slate-200 hover:border-slate-400'" class="px-4 py-4 rounded-2xl border-2 font-semibold transition-all">No debt</button>
-            <button type="button" @click="answers.hasDebt=true" :class="answers.hasDebt===true ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-900 border-slate-200 hover:border-slate-400'" class="px-4 py-4 rounded-2xl border-2 font-semibold transition-all">Yes, some</button>
+            <button type="button" @click="answers.hasDebt=false" :class="answers.hasDebt===false ? 'bg-ink text-white border-ink' : 'bg-white text-ink border-ink-border hover:border-ink'" class="px-4 py-4 rounded-2xl border-2 font-semibold transition-all">No debt</button>
+            <button type="button" @click="answers.hasDebt=true" :class="answers.hasDebt===true ? 'bg-ink text-white border-ink' : 'bg-white text-ink border-ink-border hover:border-ink'" class="px-4 py-4 rounded-2xl border-2 font-semibold transition-all">Yes, some</button>
           </div>
         </div>
 
         <!-- Q6: Personal nut -->
         <div class="mb-8">
-          <label class="block font-semibold text-slate-900 mb-1">What's the minimum your life costs every month?</label>
-          <p class="text-sm text-slate-500 mb-3 flex items-start gap-1.5">
+          <label class="block font-semibold text-ink mb-1">What's the minimum your life costs every month?</label>
+          <p class="text-sm text-ink-muted mb-3 flex items-start gap-1.5">
             <span>Rent / mortgage, food, gas, insurance, phone, debt minimums. The bare survival number.</span>
-            <button type="button" @click="toggleTip('nut')" class="shrink-0 text-slate-400 hover:text-slate-700">
+            <button type="button" @click="toggleTip('nut')" class="shrink-0 text-ink-muted hover:text-ink">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"/></svg>
             </button>
           </p>
-          <div x-show="tip==='nut'" x-transition class="mb-3 tooltip-pop bg-white border border-slate-200 rounded-xl p-4 text-sm text-slate-700">
-            <p>This is a sanity check. If 12 months of your projected Owner's Pay can't cover this number, the business has a pricing problem or you need outside runway.</p>
+          <div x-show="tip==='nut'" x-transition class="mb-3 tooltip-pop bg-white border border-ink-border rounded-xl p-4 text-sm text-ink-body">
+            <p>This is a sanity check. If 12 months of your projected Owner's Comp can't cover this number, the business has a pricing problem or you need outside runway. Profit First will surface that fast. It won't fix it for you.</p>
           </div>
           <div class="relative">
-            <span class="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 font-semibold">$</span>
-            <input type="number" min="0" step="100" x-model.number="answers.monthlyNut" placeholder="3,500" class="w-full pl-9 pr-4 py-4 bg-white rounded-2xl border-2 border-slate-200 focus:border-slate-900 focus:outline-none text-lg font-semibold tabular-nums">
-            <span class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">/ month</span>
+            <span class="absolute left-5 top-1/2 -translate-y-1/2 text-ink-muted font-semibold">$</span>
+            <input type="number" min="0" step="100" x-model.number="answers.monthlyNut" placeholder="3,500" inputmode="numeric" class="w-full pl-9 pr-4 py-4 bg-white rounded-2xl border-2 border-ink-border focus:border-ink focus:outline-none text-lg font-semibold tabular-nums">
+            <span class="absolute right-5 top-1/2 -translate-y-1/2 text-ink-muted text-sm">/ month</span>
           </div>
         </div>
 
         <!-- Nav -->
         <div class="flex gap-3 pt-2">
-          <button @click="back()" class="px-5 py-3.5 text-slate-600 hover:text-slate-900 font-medium">&larr; Back</button>
-          <button @click="computeAndAdvance()" :disabled="!step2Valid()" :class="step2Valid() ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-slate-300 cursor-not-allowed'" class="flex-1 sm:flex-none sm:ml-auto px-7 py-4 text-white rounded-2xl font-semibold transition-all">
+          <button @click="back()" class="px-5 py-3.5 text-ink-muted hover:text-ink font-medium">&larr; Back</button>
+          <button @click="computeAndAdvance()" :disabled="!step2Valid()" :class="step2Valid() ? 'bg-coral hover:bg-coral-dark' : 'bg-ink-border cursor-not-allowed'" class="flex-1 sm:flex-none sm:ml-auto px-8 py-4 text-white rounded-pill font-semibold transition-all">
             See my plan
             <span class="ml-1.5">&rarr;</span>
           </button>
@@ -298,13 +366,16 @@
 
       <!-- ====== STEP 3: RECOMMENDATION REVEAL ====== -->
       <section x-show="step===3" class="fade-enter">
-        <p class="text-xs font-semibold text-emerald-700 uppercase tracking-widest mb-3">Your starting plan</p>
-        <h2 class="serif text-3xl sm:text-4xl text-slate-900 leading-tight mb-2">Here's where every dollar goes.</h2>
-        <p class="text-slate-600 mb-6" x-text="recoSubtitle()"></p>
+        <div class="flex items-center gap-2 mb-4">
+          <span class="w-6 h-px bg-coral"></span>
+          <span class="eyebrow text-coral">Your Starting Plan</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl text-ink leading-tight mb-2 font-semibold">Here's where every <span class="serif-italic">dollar</span> goes.</h2>
+        <p class="text-ink-body mb-6" x-text="recoSubtitle()"></p>
 
         <!-- Visual bar -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-5 mb-5">
-          <div class="flex h-14 rounded-xl overflow-hidden ring-1 ring-slate-100">
+        <div class="bg-white rounded-2xl border border-ink-border p-5 mb-5">
+          <div class="flex h-14 rounded-xl overflow-hidden ring-1 ring-ink-border">
             <template x-for="acct in computedAccounts()" :key="acct.key">
               <div :style="`width: ${acct.pct}%; background: ${acct.color}`" class="flex items-center justify-center text-white text-xs font-bold transition-all duration-500" :title="`${acct.name}: ${acct.pct}%`">
                 <span x-show="acct.pct >= 8" x-text="`${acct.pct}%`"></span>
@@ -316,8 +387,8 @@
               <div class="flex items-center gap-3">
                 <span class="w-3 h-3 rounded-full shrink-0" :style="`background:${acct.color}`"></span>
                 <div class="flex-1 min-w-0">
-                  <div class="text-sm font-semibold text-slate-900" x-text="acct.name"></div>
-                  <div class="text-xs text-slate-500" x-text="`${acct.pct}% of every deposit`"></div>
+                  <div class="text-sm font-semibold text-ink" x-text="acct.name"></div>
+                  <div class="text-xs text-ink-muted" x-text="`${acct.pct}% of every deposit`"></div>
                 </div>
               </div>
             </template>
@@ -325,15 +396,12 @@
         </div>
 
         <!-- Why these numbers -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-5 mb-5">
-          <h3 class="font-semibold text-slate-900 mb-3 flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5 text-emerald-600"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"/></svg>
-            Why these numbers, for you
-          </h3>
-          <ul class="space-y-3 text-sm text-slate-700">
+        <div class="bg-white rounded-2xl border border-ink-border p-5 mb-5">
+          <p class="eyebrow text-ink-muted mb-3">Why these numbers, for you</p>
+          <ul class="space-y-3.5 text-sm text-ink-body leading-relaxed">
             <template x-for="(reason, i) in recoReasons()" :key="i">
               <li class="flex items-start gap-2.5">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 shrink-0"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-coral mt-2 shrink-0"></span>
                 <span x-html="reason"></span>
               </li>
             </template>
@@ -343,9 +411,9 @@
         <!-- Sanity check warnings -->
         <div x-show="sanityWarnings().length > 0" class="space-y-3 mb-5">
           <template x-for="(w, i) in sanityWarnings()" :key="i">
-            <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-sm text-amber-900">
+            <div class="bg-coral/10 border border-coral/30 rounded-2xl p-4 text-sm text-ink">
               <div class="flex items-start gap-2.5">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5 shrink-0 mt-0.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5 shrink-0 mt-0.5 text-coral-dark"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"/></svg>
                 <span x-html="w"></span>
               </div>
             </div>
@@ -353,8 +421,8 @@
         </div>
 
         <div class="flex gap-3 pt-2">
-          <button @click="back()" class="px-5 py-3.5 text-slate-600 hover:text-slate-900 font-medium">&larr; Back</button>
-          <button @click="next()" class="flex-1 sm:flex-none sm:ml-auto px-7 py-4 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl font-semibold transition-all">
+          <button @click="back()" class="px-5 py-3.5 text-ink-muted hover:text-ink font-medium">&larr; Back</button>
+          <button @click="next()" class="flex-1 sm:flex-none sm:ml-auto px-8 py-4 bg-ink hover:bg-ink-surface text-white rounded-pill font-semibold transition-all">
             Adjust &amp; calculate
             <span class="ml-1.5">&rarr;</span>
           </button>
@@ -363,193 +431,336 @@
 
       <!-- ====== STEP 4: ADJUST + CALCULATOR ====== -->
       <section x-show="step===4" class="fade-enter">
-        <p class="text-xs font-semibold text-emerald-700 uppercase tracking-widest mb-3">Tune it</p>
-        <h2 class="serif text-3xl sm:text-4xl text-slate-900 leading-tight mb-2">Make it yours.</h2>
-        <p class="text-slate-600 mb-6">Adjust the sliders to match your situation. Operating Expenses is whatever's left over, that's the whole point.</p>
+        <div class="flex items-center gap-2 mb-4">
+          <span class="w-6 h-px bg-coral"></span>
+          <span class="eyebrow text-coral">Tune It</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl text-ink leading-tight mb-2 font-semibold">Make it <span class="serif-italic">yours</span>.</h2>
+        <p class="text-ink-body mb-6">Adjust the sliders below. Operating Expenses is whatever's left over, and that's the whole point: you force the business to fit a smaller plate.</p>
+
+        <!-- Educational note -->
+        <div class="bg-slate-100 border border-slate-200 rounded-2xl p-4 mb-5 text-sm text-ink-body">
+          <p class="eyebrow text-ink mb-2">The Ramp Strategy</p>
+          <p>Don't try to nail your final numbers today. Pick a starting point, run for 90 days, then bump Profit up 1 to 2 points and trim OpEx by the same. Repeat every quarter until you hit your targets. Trying to jump from 0% profit to 10% in one move usually fails. Slow ratchet wins.</p>
+        </div>
 
         <!-- Sliders -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-5 mb-5 space-y-6">
+        <div class="bg-white rounded-2xl border border-ink-border p-5 mb-5 space-y-6">
           <template x-for="acct in editableAccounts" :key="acct.key">
             <div>
               <div class="flex items-baseline justify-between mb-2">
                 <div class="flex items-center gap-2">
                   <span class="w-2.5 h-2.5 rounded-full" :style="`background:${acct.color}`"></span>
-                  <span class="font-semibold text-slate-900" x-text="acct.name"></span>
+                  <span class="font-semibold text-ink" x-text="acct.name"></span>
                 </div>
-                <span class="text-2xl font-bold text-slate-900 tabular-nums"><span x-text="custom[acct.key]"></span>%</span>
+                <span class="text-2xl font-bold text-ink tabular-nums"><span x-text="custom[acct.key]"></span>%</span>
               </div>
-              <input type="range" min="0" max="80" step="1" x-model.number="custom[acct.key]" :style="`color: ${acct.color}`" class="w-full">
-              <p class="text-xs text-slate-500 mt-1.5" x-text="acct.hint"></p>
+              <input type="range" min="0" max="80" step="1" x-model.number="custom[acct.key]" class="w-full">
+              <p class="text-xs text-ink-muted mt-1.5" x-text="acct.hint"></p>
             </div>
           </template>
 
           <!-- OpEx (computed) -->
-          <div class="pt-5 border-t border-slate-100">
+          <div class="pt-5 border-t border-ink-border">
             <div class="flex items-baseline justify-between mb-2">
               <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-slate-700"></span>
-                <span class="font-semibold text-slate-900">Operating Expenses</span>
-                <span class="text-[10px] uppercase font-bold tracking-wider text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">Auto</span>
+                <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
+                <span class="font-semibold text-ink">Operating Expenses</span>
+                <span class="eyebrow text-ink-muted bg-cream px-2 py-0.5 rounded-pill">Auto</span>
               </div>
-              <span :class="opexComputed() < 0 ? 'text-rose-600' : 'text-slate-900'" class="text-2xl font-bold tabular-nums"><span x-text="opexComputed()"></span>%</span>
+              <span :class="opexComputed() < 0 ? 'text-coral-dark' : 'text-ink'" class="text-2xl font-bold tabular-nums"><span x-text="opexComputed()"></span>%</span>
             </div>
-            <p class="text-xs text-slate-500">Whatever's left after Profit, Owner's Pay, and Tax. Force yourself to live within this.</p>
-            <div x-show="opexComputed() < 20" x-transition class="mt-3 bg-rose-50 border border-rose-200 rounded-xl p-3 text-xs text-rose-900">
-              <strong>Tight:</strong> Operating Expenses below 20% leaves almost nothing for software, gear, and growth. Reduce one of the others.
+            <p class="text-xs text-ink-muted">Whatever's left after Profit, Owner's Comp, and Tax. Force yourself to live within this.</p>
+            <div x-show="opexComputed() < 20 && opexComputed() >= 0" x-transition class="mt-3 bg-coral/10 border border-coral/30 rounded-xl p-3 text-xs text-ink">
+              <strong class="text-coral-dark">Tight:</strong> Operating Expenses below 20% leaves almost nothing for software, gear, and growth. Reduce one of the others.
             </div>
-            <div x-show="opexComputed() < 0" x-transition class="mt-3 bg-rose-100 border border-rose-300 rounded-xl p-3 text-xs text-rose-900 font-semibold">
+            <div x-show="opexComputed() < 0" x-transition class="mt-3 bg-coral/20 border border-coral/40 rounded-xl p-3 text-xs text-ink font-semibold">
               The other three add up to over 100%. Pull one back.
             </div>
           </div>
         </div>
 
         <!-- Live calculator -->
-        <div class="bg-slate-900 text-white rounded-2xl p-5 mb-5">
-          <div class="flex items-center gap-2 mb-3">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5 text-emerald-400"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V12Zm-12 0h.008v.008H6V12Z"/></svg>
-            <h3 class="font-semibold">If you got paid today...</h3>
-          </div>
-          <p class="text-sm text-slate-400 mb-4">Enter a deposit. See exactly how to split it.</p>
-          <div class="relative mb-5">
-            <span class="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 font-semibold text-xl">$</span>
-            <input type="number" min="0" step="100" x-model.number="depositAmount" placeholder="5,000" class="w-full pl-10 pr-4 py-4 bg-slate-800 rounded-xl border border-slate-700 focus:border-emerald-500 focus:outline-none text-2xl font-bold tabular-nums text-white placeholder:text-slate-600">
-          </div>
-          <div class="space-y-3">
-            <template x-for="acct in computedAccountsCustom()" :key="acct.key">
-              <div class="flex items-center justify-between py-2.5 border-b border-slate-800 last:border-0">
-                <div class="flex items-center gap-3">
-                  <span class="w-2.5 h-2.5 rounded-full" :style="`background:${acct.color}`"></span>
-                  <div>
-                    <div class="font-semibold text-sm" x-text="acct.name"></div>
-                    <div class="text-xs text-slate-400" x-text="`${acct.pct}%`"></div>
+        <div class="relative bg-ink text-white rounded-2xl p-5 mb-5 overflow-hidden grain">
+          <div class="relative z-10">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="w-6 h-px bg-coral"></span>
+              <span class="eyebrow text-coral">If You Got Paid Today</span>
+            </div>
+            <p class="text-sm text-slate-200 mb-4">Enter a deposit amount. See exactly how to split it across your accounts.</p>
+            <div class="relative mb-5">
+              <span class="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 font-semibold text-xl">$</span>
+              <input type="number" min="0" step="100" x-model.number="depositAmount" placeholder="5,000" inputmode="numeric" class="w-full pl-10 pr-4 py-4 bg-ink-surface rounded-xl border border-ink-surface focus:border-coral focus:outline-none text-2xl font-bold tabular-nums text-white placeholder:text-slate-500">
+            </div>
+            <div class="space-y-3">
+              <template x-for="acct in computedAccountsCustom()" :key="acct.key">
+                <div class="flex items-center justify-between py-2.5 border-b border-white/10 last:border-0">
+                  <div class="flex items-center gap-3">
+                    <span class="w-2.5 h-2.5 rounded-full" :style="`background:${acct.color}`"></span>
+                    <div>
+                      <div class="font-semibold text-sm" x-text="acct.name"></div>
+                      <div class="text-xs text-slate-300" x-text="`${acct.pct}%`"></div>
+                    </div>
                   </div>
+                  <div class="text-xl font-bold tabular-nums" x-text="formatMoney(depositAmount * acct.pct / 100)"></div>
                 </div>
-                <div class="text-xl font-bold tabular-nums" x-text="formatMoney(depositAmount * acct.pct / 100)"></div>
-              </div>
-            </template>
+              </template>
+            </div>
           </div>
         </div>
 
-        <div class="flex gap-3 pt-2">
-          <button @click="back()" class="px-5 py-3.5 text-slate-600 hover:text-slate-900 font-medium">&larr; Back</button>
-          <button @click="resetCustomToReco()" class="px-5 py-3.5 text-slate-600 hover:text-slate-900 font-medium text-sm">Reset to recommended</button>
-          <button @click="next()" :disabled="opexComputed() < 0" :class="opexComputed() < 0 ? 'bg-slate-300 cursor-not-allowed' : 'bg-slate-900 hover:bg-slate-800'" class="flex-1 sm:flex-none sm:ml-auto px-7 py-4 text-white rounded-2xl font-semibold transition-all">
+        <div class="flex flex-wrap gap-3 pt-2">
+          <button @click="back()" class="px-5 py-3.5 text-ink-muted hover:text-ink font-medium">&larr; Back</button>
+          <button @click="resetCustomToReco()" class="px-5 py-3.5 text-ink-muted hover:text-ink font-medium text-sm">Reset to recommended</button>
+          <button @click="next()" :disabled="opexComputed() < 0" :class="opexComputed() < 0 ? 'bg-ink-border cursor-not-allowed' : 'bg-coral hover:bg-coral-dark'" class="flex-1 sm:flex-none sm:ml-auto px-8 py-4 text-white rounded-pill font-semibold transition-all">
             Save my plan
             <span class="ml-1.5">&rarr;</span>
           </button>
         </div>
       </section>
 
-      <!-- ====== STEP 5: SUMMARY ====== -->
+      <!-- ====== STEP 5: COMPLETE PLAN + EDUCATIONAL DEEP-DIVE ====== -->
       <section x-show="step===5" class="fade-enter">
         <div class="text-center mb-8">
-          <div class="inline-flex w-16 h-16 rounded-2xl bg-emerald-100 items-center justify-center mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-8 h-8 text-emerald-700"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
+          <div class="inline-flex w-14 h-14 rounded-pill bg-coral/15 items-center justify-center mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-7 h-7 text-coral-dark"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
           </div>
-          <h2 class="serif text-3xl sm:text-4xl text-slate-900 leading-tight mb-2">Your plan is set.</h2>
-          <p class="text-slate-600">Print this, screenshot it, or come back to this URL anytime.</p>
+          <h2 class="text-3xl sm:text-4xl text-ink leading-tight mb-2 font-semibold">Your <span class="serif-italic">complete</span> plan.</h2>
+          <p class="text-ink-body">The allocations, the bank setup, the rhythm, and the rules.</p>
         </div>
 
-        <!-- Final allocations card -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-6 mb-5">
-          <h3 class="font-semibold text-slate-900 mb-4 text-sm uppercase tracking-wider text-slate-500">Your starting allocations</h3>
-          <div class="space-y-3">
+        <!-- 1. Final allocations card -->
+        <div class="bg-white rounded-2xl border border-ink-border p-6 mb-5">
+          <p class="eyebrow text-ink-muted mb-4">1. Your Allocations</p>
+          <div class="space-y-2.5">
             <template x-for="acct in computedAccountsCustom()" :key="acct.key">
-              <div class="flex items-center justify-between p-3 rounded-xl" :style="`background: ${acct.color}10`">
+              <div class="flex items-center justify-between p-4 rounded-xl" :style="`background: ${acct.color}12`">
                 <div class="flex items-center gap-3">
                   <span class="w-3 h-3 rounded-full" :style="`background:${acct.color}`"></span>
-                  <span class="font-semibold text-slate-900" x-text="acct.name"></span>
+                  <span class="font-semibold text-ink" x-text="acct.name"></span>
                 </div>
                 <span class="text-2xl font-bold tabular-nums" :style="`color: ${acct.color}`"><span x-text="acct.pct"></span>%</span>
               </div>
             </template>
           </div>
+
+          <!-- Quick-reference deposit table -->
+          <div class="mt-5 pt-5 border-t border-ink-border">
+            <p class="eyebrow text-ink-muted mb-3">For a sample deposit, that means:</p>
+            <div class="overflow-x-auto -mx-2">
+              <table class="w-full text-sm">
+                <thead>
+                  <tr class="text-left text-ink-muted">
+                    <th class="px-2 py-2 font-medium">Deposit</th>
+                    <template x-for="acct in computedAccountsCustom()" :key="acct.key">
+                      <th class="px-2 py-2 font-medium text-right" x-text="acct.shortName"></th>
+                    </template>
+                  </tr>
+                </thead>
+                <tbody class="text-ink">
+                  <template x-for="amt in [1000, 5000, 10000]" :key="amt">
+                    <tr class="border-t border-ink-border">
+                      <td class="px-2 py-2.5 font-semibold tabular-nums" x-text="formatMoney(amt)"></td>
+                      <template x-for="acct in computedAccountsCustom()" :key="acct.key">
+                        <td class="px-2 py-2.5 text-right tabular-nums" x-text="formatMoney(amt * acct.pct / 100)"></td>
+                      </template>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
 
-        <!-- Operational checklist -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-6 mb-5">
-          <h3 class="font-semibold text-slate-900 mb-4 text-sm uppercase tracking-wider text-slate-500">How to actually run it</h3>
-          <ol class="space-y-4 text-sm">
-            <li class="flex gap-3">
-              <span class="shrink-0 w-7 h-7 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold">1</span>
+        <!-- 2. The five accounts (educational) -->
+        <div class="bg-white rounded-2xl border border-ink-border p-6 mb-5">
+          <p class="eyebrow text-ink-muted mb-4">2. What Each Account Is For</p>
+          <div class="space-y-4 text-sm">
+            <div class="flex gap-3">
+              <span class="w-2.5 h-2.5 rounded-full bg-ink-muted shrink-0 mt-1.5"></span>
               <div>
-                <div class="font-semibold text-slate-900 mb-0.5">Open 5 separate accounts</div>
-                <p class="text-slate-600">Income, Profit, Owner's Comp, Tax, OpEx. Use Relay (free, 20 accounts, official Profit First partner) or a credit union with no per-account fees.</p>
+                <div class="font-semibold text-ink mb-0.5">Income</div>
+                <p class="text-ink-body leading-relaxed">A holding tank. Every deposit lands here first. <strong>You never spend from this account.</strong> It's only purpose is to accumulate money between allocation days.</p>
               </div>
-            </li>
-            <li class="flex gap-3">
-              <span class="shrink-0 w-7 h-7 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold">2</span>
+            </div>
+            <div class="flex gap-3">
+              <span class="w-2.5 h-2.5 rounded-full shrink-0 mt-1.5" style="background:#F57F5B"></span>
               <div>
-                <div class="font-semibold text-slate-900 mb-0.5">All deposits land in Income</div>
-                <p class="text-slate-600">Don't spend a dollar from Income. It's a holding account.</p>
+                <div class="font-semibold text-ink mb-0.5">Profit</div>
+                <p class="text-ink-body leading-relaxed">Your reward for taking risk. <strong>Hands off until quarterly distribution day.</strong> This is not for reinvestment, not for "I'll use it next month if I'm short," not for emergencies (that's what the Vault is for). It's profit. Treat it like it doesn't exist between distributions.</p>
               </div>
-            </li>
-            <li class="flex gap-3">
-              <span class="shrink-0 w-7 h-7 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold">3</span>
+            </div>
+            <div class="flex gap-3">
+              <span class="w-2.5 h-2.5 rounded-full shrink-0 mt-1.5" style="background:#A8CDD7"></span>
               <div>
-                <div class="font-semibold text-slate-900 mb-0.5">On the 10th &amp; 25th, distribute</div>
-                <p class="text-slate-600">Move Income's full balance into the four buckets using your percentages. Pay all bills only from OpEx.</p>
+                <div class="font-semibold text-ink mb-0.5">Owner's Comp</div>
+                <p class="text-ink-body leading-relaxed">Your paycheck. <strong>Pay yourself a predictable amount on a predictable schedule</strong>, like a real job. If you're an LLC/sole prop, take draws on the 10th and 25th. If you're an S-corp, fund payroll from this account.</p>
               </div>
-            </li>
-            <li class="flex gap-3">
-              <span class="shrink-0 w-7 h-7 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold">4</span>
+            </div>
+            <div class="flex gap-3">
+              <span class="w-2.5 h-2.5 rounded-full shrink-0 mt-1.5" style="background:#8AB3BD"></span>
               <div>
-                <div class="font-semibold text-slate-900 mb-0.5" x-text="answers.hasDebt ? 'Every quarter: 95% to debt, 5% to celebrate' : 'Every quarter: take 50% of Profit as bonus'"></div>
-                <p class="text-slate-600" x-text="answers.hasDebt ? 'Last day of March, June, September, December: 95% of your Profit balance attacks your smallest debt. The remaining 5% is a small reward to keep the habit alive.' : 'Last day of March, June, September, December: take 50% of your Profit account as your owner bonus. The other 50% stays as a rainy day fund.'"></p>
+                <div class="font-semibold text-ink mb-0.5">Tax</div>
+                <p class="text-ink-body leading-relaxed">Reserved for the IRS, state, and self-employment tax. <strong>Covers both the business's taxes and your personal estimated payments.</strong> Even if you're on payroll with withholding, you keep this account so the business reimburses you. Otherwise withholding feels like a pay cut and the system fails behaviorally.</p>
               </div>
-            </li>
-            <li class="flex gap-3">
-              <span class="shrink-0 w-7 h-7 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold">5</span>
+            </div>
+            <div class="flex gap-3">
+              <span class="w-2.5 h-2.5 rounded-full shrink-0 mt-1.5" style="background:#2E3C41"></span>
               <div>
-                <div class="font-semibold text-slate-900 mb-0.5">Re-tune every 90 days</div>
-                <p class="text-slate-600">Bump Profit up 1 to 2 points each quarter. Trim OpEx by the same amount. The discipline forces efficiency.</p>
+                <div class="font-semibold text-ink mb-0.5">Operating Expenses</div>
+                <p class="text-ink-body leading-relaxed">Everything else: software, gear, ads, payroll, contractors, supplies, rent. <strong>If this runs dry before the next allocation, you DO NOT raid the other accounts.</strong> You delay, renegotiate, or cut. That is the system telling you costs are too high.</p>
               </div>
-            </li>
-            <li x-show="opexTooLow()" class="flex gap-3">
-              <span class="shrink-0 w-7 h-7 rounded-full bg-rose-600 text-white flex items-center justify-center text-xs font-bold">!</span>
-              <div>
-                <div class="font-semibold text-slate-900 mb-0.5">If OpEx runs dry: cut costs, don't raid</div>
-                <p class="text-slate-600">When OpEx empties before the next allocation, you do NOT pull from Profit, Tax, or Owner's Pay. You delay, renegotiate, or kill the expense. That's the system working.</p>
-              </div>
-            </li>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Bank setup -->
+        <div class="bg-white rounded-2xl border border-ink-border p-6 mb-5">
+          <p class="eyebrow text-ink-muted mb-4">3. Set Up the Accounts</p>
+          <p class="text-sm text-ink-body mb-4 leading-relaxed">Use a bank with no per-account fees and no minimums. Profit First's official banking partner is <a href="https://relayfi.com" target="_blank" rel="noopener" class="text-coral-dark underline hover:no-underline font-medium">Relay</a> (free, 20 accounts, percentage-based auto-transfers, ~10 minute setup). A local credit union also works.</p>
+
+          <div class="bg-cream rounded-xl p-4 mb-4">
+            <p class="font-semibold text-ink mb-2 text-sm">Bank 1 (operations, daily access)</p>
+            <ul class="text-sm text-ink-body space-y-1.5">
+              <li class="flex gap-2"><span class="text-coral">&bull;</span><span>Income</span></li>
+              <li class="flex gap-2"><span class="text-coral">&bull;</span><span>Owner's Comp (linked to your personal account for transfers)</span></li>
+              <li class="flex gap-2"><span class="text-coral">&bull;</span><span>Operating Expenses (this is the only one with a debit card)</span></li>
+            </ul>
+          </div>
+
+          <div class="bg-slate-100 rounded-xl p-4">
+            <p class="font-semibold text-ink mb-2 text-sm">Bank 2 (out of sight, no debit card)</p>
+            <ul class="text-sm text-ink-body space-y-1.5 mb-3">
+              <li class="flex gap-2"><span class="text-coral">&bull;</span><span>Profit</span></li>
+              <li class="flex gap-2"><span class="text-coral">&bull;</span><span>Tax</span></li>
+            </ul>
+            <p class="text-xs text-ink-body italic leading-relaxed">Why two banks? Temptation removal. Money you can see and easily move to OpEx <span class="serif-italic">will</span> get moved to OpEx. A different bank with a 1-2 day transfer delay creates just enough friction to keep your hands off Profit and Tax. Many people use a separate online savings account or credit union for Bank 2.</p>
+          </div>
+        </div>
+
+        <!-- 4. The 10/25 rhythm -->
+        <div class="bg-white rounded-2xl border border-ink-border p-6 mb-5">
+          <p class="eyebrow text-ink-muted mb-4">4. The 10/25 Rhythm</p>
+          <p class="text-sm text-ink-body mb-3 leading-relaxed">Twice a month, on the <strong>10th and 25th</strong>, you do two things:</p>
+          <ol class="text-sm text-ink-body space-y-2.5 mb-4 list-decimal pl-5">
+            <li>Take whatever's in <strong>Income</strong> and split it across the four other accounts using your percentages.</li>
+            <li>Pay all bills due <span class="serif-italic">only</span> from <strong>OpEx</strong>.</li>
           </ol>
+          <p class="text-sm text-ink-body leading-relaxed mb-3">Why these dates? Bills land at vendors by the 15th and end of month, which lines up. Twice-monthly batching is more efficient than ad-hoc transfers, and it lets you start to see <span class="serif-italic">cash flow waves</span>: when income piles up vs. drains, you spot trends.</p>
+          <p class="text-xs text-ink-muted leading-relaxed">Rule of thumb: don't go more frequent than weekly, and don't allocate sporadically. The pattern is the point.</p>
         </div>
 
-        <!-- The why behind the math -->
-        <div class="bg-slate-900 text-white rounded-2xl p-6 mb-5">
-          <h3 class="font-semibold mb-3 text-sm uppercase tracking-wider text-slate-400">Quick reference</h3>
-          <p class="text-sm leading-relaxed text-slate-300">
-            On a $1,000 deposit, you'd move
-            <template x-for="(acct, i) in computedAccountsCustom()" :key="acct.key">
-              <span>
-                <strong class="text-white tabular-nums" x-text="formatMoney(1000 * acct.pct / 100)"></strong>
-                to <span class="text-white" x-text="acct.shortName"></span><span x-show="i < computedAccountsCustom().length - 1">,</span><span x-show="i === computedAccountsCustom().length - 2"> and</span>
-              </span>
-            </template>.
-          </p>
+        <!-- 5. Quarterly distributions -->
+        <div class="bg-white rounded-2xl border border-ink-border p-6 mb-5">
+          <p class="eyebrow text-ink-muted mb-4">5. Quarterly Distributions</p>
+          <p class="text-sm text-ink-body mb-3 leading-relaxed">On the <strong>last business day of March, June, September, and December</strong>:</p>
+
+          <div x-show="!answers.hasDebt">
+            <div class="bg-coral/10 border border-coral/30 rounded-xl p-4 mb-3">
+              <p class="text-sm text-ink leading-relaxed"><strong>Take 50% of your Profit account balance as your owner bonus.</strong> The other 50% stays as a rainy-day cushion.</p>
+            </div>
+            <p class="text-xs text-ink-muted leading-relaxed">This is the reward for taking the risk of running a business. It is not for reinvestment, not for paying down debt, not for buying gear. It's profit. Spend it on yourself or save it. Anything else defeats the system.</p>
+          </div>
+
+          <div x-show="answers.hasDebt">
+            <div class="bg-coral/10 border border-coral/30 rounded-xl p-4 mb-3">
+              <p class="text-sm text-ink leading-relaxed"><strong>Debt-snowball mode:</strong> 95% of your Profit balance attacks your <span class="serif-italic">smallest</span> debt as a lump-sum payment. The remaining 5% is a small reward to keep the habit alive.</p>
+            </div>
+            <p class="text-xs text-ink-muted leading-relaxed">Why smallest debt first instead of highest interest? Behavioral momentum. Small wins compound into the consistency you need to keep going. Once all debt is gone, switch back to the standard 50/50 owner-bonus rule.</p>
+          </div>
         </div>
 
-        <div class="flex flex-col sm:flex-row gap-3 pt-2 mb-10">
-          <button @click="window.print()" class="px-5 py-3.5 bg-white border-2 border-slate-200 hover:border-slate-400 text-slate-900 rounded-2xl font-semibold transition-all">
+        <!-- 6. The rules that make it stick -->
+        <div class="bg-white rounded-2xl border border-ink-border p-6 mb-5">
+          <p class="eyebrow text-ink-muted mb-4">6. The Rules That Make It Stick</p>
+          <ul class="space-y-3.5 text-sm text-ink-body">
+            <li class="flex items-start gap-2.5">
+              <span class="font-bold text-coral text-base leading-none mt-0.5">01</span>
+              <span><strong class="text-ink">No raiding.</strong> When OpEx runs dry, you cut, delay, or renegotiate. You do not pull from Profit, Tax, or Owner's Comp. That's the system working as designed.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <span class="font-bold text-coral text-base leading-none mt-0.5">02</span>
+              <span><strong class="text-ink">No peeking at Bank 2.</strong> Profit and Tax accounts are out of sight on purpose. Don't log in just to check the balance. The temptation builds with familiarity.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <span class="font-bold text-coral text-base leading-none mt-0.5">03</span>
+              <span><strong class="text-ink">Re-tune every 90 days.</strong> Bump Profit up 1 to 2 points each quarter. Trim OpEx by the same. The discipline forces efficiency.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <span class="font-bold text-coral text-base leading-none mt-0.5">04</span>
+              <span><strong class="text-ink">Don't run up expenses to cut taxes.</strong> Spending $10 to "save" $3 in taxes is a $7 loss. Run the business as profitably as possible and pay the tax.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <span class="font-bold text-coral text-base leading-none mt-0.5">05</span>
+              <span><strong class="text-ink">Start now even if it's 1%.</strong> Don't wait until you're "profitable enough." The system <span class="serif-italic">forces</span> profitability. Starting at 1% and ramping is dramatically better than waiting.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <span class="font-bold text-coral text-base leading-none mt-0.5">06</span>
+              <span><strong class="text-ink">Don't skip Tax just because you're on payroll.</strong> Withholding feels like a pay cut. The Tax account is what reimburses you, restoring the felt income. Keep the account no matter your entity type.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 7. Action checklist -->
+        <div class="relative bg-gradient-to-br from-slate-300 to-slate-200 rounded-2xl p-6 mb-8 grain">
+          <div class="relative z-10">
+            <p class="eyebrow text-ink mb-4">7. Your First-Week Checklist</p>
+            <ol class="space-y-3 text-sm text-ink">
+              <li class="flex gap-3">
+                <span class="shrink-0 w-7 h-7 rounded-pill bg-ink text-white flex items-center justify-center text-xs font-bold">1</span>
+                <span class="leading-relaxed pt-1"><strong>Open 5 accounts</strong> (Income, Profit, Owner's Comp, Tax, OpEx). Use Relay or a credit union.</span>
+              </li>
+              <li class="flex gap-3">
+                <span class="shrink-0 w-7 h-7 rounded-pill bg-ink text-white flex items-center justify-center text-xs font-bold">2</span>
+                <span class="leading-relaxed pt-1"><strong>Move Profit and Tax to a second bank</strong> (or separate online savings) with no debit card.</span>
+              </li>
+              <li class="flex gap-3">
+                <span class="shrink-0 w-7 h-7 rounded-pill bg-ink text-white flex items-center justify-center text-xs font-bold">3</span>
+                <span class="leading-relaxed pt-1"><strong>Update payment processors</strong> (Stripe, ACH, etc.) to deposit into Income, not your old operating account.</span>
+              </li>
+              <li class="flex gap-3">
+                <span class="shrink-0 w-7 h-7 rounded-pill bg-ink text-white flex items-center justify-center text-xs font-bold">4</span>
+                <span class="leading-relaxed pt-1"><strong>Set calendar reminders</strong> for the 10th and 25th of every month, plus the last business day of each quarter.</span>
+              </li>
+              <li class="flex gap-3">
+                <span class="shrink-0 w-7 h-7 rounded-pill bg-ink text-white flex items-center justify-center text-xs font-bold">5</span>
+                <span class="leading-relaxed pt-1"><strong>Run your first allocation</strong> on the next 10th or 25th, whichever comes first. Don't backfill historical money. Start fresh.</span>
+              </li>
+              <li class="flex gap-3">
+                <span class="shrink-0 w-7 h-7 rounded-pill bg-ink text-white flex items-center justify-center text-xs font-bold">6</span>
+                <span class="leading-relaxed pt-1"><strong>Re-run this calculator in 90 days</strong> and bump Profit up 1 to 2 points.</span>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex flex-col sm:flex-row gap-3 pt-2 mb-10 no-print">
+          <button @click="window.print()" class="px-6 py-3.5 bg-white border-2 border-ink-border hover:border-ink text-ink rounded-pill font-semibold transition-all">
             Print / Save as PDF
           </button>
-          <button @click="step=4" class="px-5 py-3.5 text-slate-600 hover:text-slate-900 font-medium">Back to adjust</button>
-          <button @click="resetAll()" class="sm:ml-auto px-5 py-3.5 text-slate-500 hover:text-rose-600 font-medium text-sm">Start over</button>
+          <button @click="step=4" class="px-5 py-3.5 text-ink-muted hover:text-ink font-medium">Back to adjust</button>
+          <button @click="resetAll()" class="sm:ml-auto px-5 py-3.5 text-ink-muted hover:text-coral-dark font-medium text-sm">Start over</button>
         </div>
 
         <!-- Footnote -->
-        <div class="text-xs text-slate-400 text-center pt-6 border-t border-slate-200">
-          Based on the Profit First methodology by Mike Michalowicz. This is a starting point, not financial advice. Consult a Profit First Professional or your CPA for your specific situation.
+        <div class="text-xs text-ink-muted text-center pt-6 border-t border-ink-border leading-relaxed">
+          Based on the Profit First methodology by Mike Michalowicz. This calculator is a starting point and educational tool, not financial advice. For your specific tax and entity situation, consult a Profit First Professional or your CPA.
         </div>
       </section>
 
     </div>
   </main>
 
-  <!-- Sticky footer (only on early steps) -->
-  <footer x-show="step <= 2" class="border-t border-slate-200/70 bg-white/60 backdrop-blur px-5 sm:px-8 py-3">
-    <div class="max-w-2xl mx-auto text-center text-[11px] text-slate-400">
-      Built on the Profit First methodology by Mike Michalowicz
+  <!-- Footer -->
+  <footer class="border-t border-ink-border bg-white px-5 sm:px-8 py-5 no-print">
+    <div class="max-w-2xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs">
+      <div class="text-ink-muted">
+        Built by <a href="https://fonmarketing.com" target="_blank" rel="noopener" class="serif-italic text-ink hover:text-coral-dark transition-colors">five one nine</a> marketing
+      </div>
+      <div class="text-ink-muted">
+        Methodology: <a href="https://mikemichalowicz.com/profit-first/" target="_blank" rel="noopener" class="hover:text-coral-dark transition-colors">Profit First</a> by Mike Michalowicz
+      </div>
     </div>
   </footer>
 
@@ -576,11 +787,11 @@ function profitFirstApp() {
     depositAmount: 5000,
 
     accountsPreview: [
-      { name: 'Income', desc: 'Every dollar lands here first. A holding account. You never spend from it.', color: '#64748b' },
-      { name: 'Profit', desc: 'Your reward for risk. Distributed quarterly. Hands off otherwise.', color: '#10b981' },
-      { name: "Owner's Comp", desc: 'Your paycheck. Predictable, on a schedule, like a real job.', color: '#6366f1' },
-      { name: 'Tax', desc: 'Reserved for the IRS. Pays both business and personal taxes.', color: '#f59e0b' },
-      { name: 'Operating Expenses', desc: 'Bills, gear, software, subs, payroll. Everything else.', color: '#0f172a' },
+      { name: 'Income', desc: 'Holding only. Every deposit lands here. You never spend from it.', color: '#8A8F94' },
+      { name: 'Profit', desc: 'Your reward for risk. Hands off, distributed quarterly as your bonus.', color: '#F57F5B' },
+      { name: "Owner's Comp", desc: 'Your paycheck. Predictable, on a schedule, like a real job.', color: '#A8CDD7' },
+      { name: 'Tax', desc: 'Reserved for IRS and state. Pays both business and personal taxes.', color: '#8AB3BD' },
+      { name: 'Operating Expenses', desc: 'Everything else: gear, software, payroll, ads, supplies.', color: '#2E3C41' },
     ],
 
     revenueBands: [
@@ -591,9 +802,9 @@ function profitFirstApp() {
     ],
 
     editableAccounts: [
-      { key: 'profit', name: 'Profit', color: '#10b981', hint: "Your quarterly bonus. Start at 5%, bump 1-2% every quarter." },
-      { key: 'ownerPay', name: "Owner's Comp", color: '#6366f1', hint: 'Your paycheck. Bigger if this is full-time.' },
-      { key: 'tax', name: 'Tax', color: '#f59e0b', hint: 'The IRS gets paid no matter what. 15% is the standard target.' },
+      { key: 'profit', name: 'Profit', color: '#F57F5B', hint: 'Your quarterly bonus. Start at 5%, bump 1-2% every quarter.' },
+      { key: 'ownerPay', name: "Owner's Comp", color: '#A8CDD7', hint: 'Your paycheck. Bigger if this is full-time work.' },
+      { key: 'tax', name: 'Tax', color: '#8AB3BD', hint: 'The IRS gets paid no matter what. 15% is the standard target.' },
     ],
 
     init() {
@@ -605,6 +816,7 @@ function profitFirstApp() {
           Object.assign(this.custom, s.custom || {});
           if (typeof s.step === 'number') this.step = s.step;
           if (typeof s.depositAmount === 'number') this.depositAmount = s.depositAmount;
+          if (s.reco) this.reco = s.reco;
         } catch(e) { /* corrupted, ignore */ }
       }
       this.$watch('answers', () => this.persist(), { deep: true });
@@ -617,6 +829,7 @@ function profitFirstApp() {
       localStorage.setItem('pf-calc-state', JSON.stringify({
         answers: this.answers,
         custom: this.custom,
+        reco: this.reco,
         step: this.step,
         depositAmount: this.depositAmount,
       }));
@@ -626,24 +839,16 @@ function profitFirstApp() {
       return ['Welcome', 'Business', 'Work', 'Plan', 'Adjust', 'Done'][this.step] || '';
     },
 
-    toggleTip(name) {
-      this.tip = (this.tip === name) ? null : name;
-    },
-
+    toggleTip(name) { this.tip = (this.tip === name) ? null : name; },
     next() { if (this.step < this.totalSteps - 1) this.step++; },
     back() { if (this.step > 0) this.step--; },
 
-    step1Valid() {
-      return this.answers.workType && this.answers.entity && this.answers.revenue;
-    },
-    step2Valid() {
-      return this.answers.hasDebt !== null && typeof this.answers.monthlyNut === 'number' && this.answers.monthlyNut >= 0;
-    },
+    step1Valid() { return this.answers.workType && this.answers.entity && this.answers.revenue; },
+    step2Valid() { return this.answers.hasDebt !== null && typeof this.answers.monthlyNut === 'number' && this.answers.monthlyNut >= 0; },
 
     computeRecommendation() {
       let profit = 5, ownerPay = 50, tax = 15;
 
-      // Revenue band shifts
       if (this.answers.revenue === 'over500') {
         profit = 15; ownerPay = 20; tax = 15;
       } else if (this.answers.revenue === '250to500') {
@@ -652,7 +857,6 @@ function profitFirstApp() {
         profit = 5; ownerPay = 50; tax = 15;
       }
 
-      // Side hustle override: if not relying on the business, profit goes up, owner pay drops
       if (this.answers.workType === 'sidehustle') {
         profit = Math.max(profit, 15);
         ownerPay = 20;
@@ -671,23 +875,21 @@ function profitFirstApp() {
 
     computedAccounts() {
       return [
-        { key: 'profit', name: 'Profit', shortName: 'Profit', pct: this.reco.profit, color: '#10b981' },
-        { key: 'ownerPay', name: "Owner's Comp", shortName: "Owner's Comp", pct: this.reco.ownerPay, color: '#6366f1' },
-        { key: 'tax', name: 'Tax', shortName: 'Tax', pct: this.reco.tax, color: '#f59e0b' },
-        { key: 'opex', name: 'Operating Expenses', shortName: 'OpEx', pct: this.reco.opex, color: '#0f172a' },
+        { key: 'profit', name: 'Profit', shortName: 'Profit', pct: this.reco.profit, color: '#F57F5B' },
+        { key: 'ownerPay', name: "Owner's Comp", shortName: "Owner's", pct: this.reco.ownerPay, color: '#A8CDD7' },
+        { key: 'tax', name: 'Tax', shortName: 'Tax', pct: this.reco.tax, color: '#8AB3BD' },
+        { key: 'opex', name: 'Operating Expenses', shortName: 'OpEx', pct: this.reco.opex, color: '#2E3C41' },
       ];
     },
 
-    opexComputed() {
-      return 100 - (this.custom.profit + this.custom.ownerPay + this.custom.tax);
-    },
+    opexComputed() { return 100 - (this.custom.profit + this.custom.ownerPay + this.custom.tax); },
 
     computedAccountsCustom() {
       return [
-        { key: 'profit', name: 'Profit', shortName: 'Profit', pct: this.custom.profit, color: '#10b981' },
-        { key: 'ownerPay', name: "Owner's Comp", shortName: "Owner's Comp", pct: this.custom.ownerPay, color: '#6366f1' },
-        { key: 'tax', name: 'Tax', shortName: 'Tax', pct: this.custom.tax, color: '#f59e0b' },
-        { key: 'opex', name: 'Operating Expenses', shortName: 'OpEx', pct: Math.max(0, this.opexComputed()), color: '#0f172a' },
+        { key: 'profit', name: 'Profit', shortName: 'Profit', pct: this.custom.profit, color: '#F57F5B' },
+        { key: 'ownerPay', name: "Owner's Comp", shortName: "Owner's", pct: this.custom.ownerPay, color: '#A8CDD7' },
+        { key: 'tax', name: 'Tax', shortName: 'Tax', pct: this.custom.tax, color: '#8AB3BD' },
+        { key: 'opex', name: 'Operating Expenses', shortName: 'OpEx', pct: Math.max(0, this.opexComputed()), color: '#2E3C41' },
       ];
     },
 
@@ -707,43 +909,42 @@ function profitFirstApp() {
       const r = this.answers.revenue;
 
       if (this.answers.workType === 'sidehustle') {
-        reasons.push(`<strong>You said this is a side hustle.</strong> Since a day job covers your life, we bumped <strong class="text-emerald-700">Profit to ${this.reco.profit}%</strong> and dropped <strong style="color:#6366f1">Owner's Comp to ${this.reco.ownerPay}%</strong>. The business builds wealth instead of replacing your salary.`);
+        reasons.push(`<strong>You said this is a side hustle.</strong> Since a day job covers your life, we bumped <strong style="color:#D96D4D">Profit to ${this.reco.profit}%</strong> and dropped <strong>Owner's Comp to ${this.reco.ownerPay}%</strong>. The business builds wealth instead of replacing your salary.`);
       } else {
         if (r === 'under100' || r === '100to250') {
-          reasons.push(`<strong>You're starting up.</strong> The official Profit First target for businesses under $250K real revenue is <strong class="text-emerald-700">5% Profit</strong>, <strong style="color:#6366f1">50% Owner's Comp</strong>, <strong style="color:#f59e0b">15% Tax</strong>, <strong>30% OpEx</strong>. The big slice goes to you because there's nobody else to pay.`);
+          reasons.push(`<strong>You're starting up.</strong> The official Profit First target for businesses under $250K real revenue is <strong style="color:#D96D4D">5% Profit</strong>, <strong>50% Owner's Comp</strong>, <strong>15% Tax</strong>, <strong>30% OpEx</strong>. The big slice goes to you because, at this stage, there's nobody else to pay.`);
         } else if (r === '250to500') {
-          reasons.push(`<strong>$250K to $500K range.</strong> You can afford to pull more profit out and start absorbing some staff/contractor costs. The book moves you to <strong class="text-emerald-700">10% Profit</strong>, <strong style="color:#6366f1">35% Owner's Comp</strong>, <strong>40% OpEx</strong>.`);
+          reasons.push(`<strong>$250K to $500K range.</strong> You can afford to pull more profit out and start absorbing some staff or contractor costs. The book moves you to <strong style="color:#D96D4D">10% Profit</strong>, <strong>35% Owner's Comp</strong>, <strong>40% OpEx</strong>.`);
         } else {
-          reasons.push(`<strong>$500K+.</strong> At this stage, the business should fund itself comfortably. <strong class="text-emerald-700">15% Profit</strong>, <strong style="color:#6366f1">20% Owner's Comp</strong>, <strong>50% OpEx</strong>. More room to hire, less reliance on your single paycheck.`);
+          reasons.push(`<strong>$500K+.</strong> At this stage, the business should fund itself comfortably and your team starts doing the work. <strong style="color:#D96D4D">15% Profit</strong>, <strong>20% Owner's Comp</strong>, <strong>50% OpEx</strong>. More room to hire, less reliance on your single paycheck.`);
         }
       }
 
-      reasons.push(`<strong style="color:#f59e0b">Tax stays at 15%.</strong> This covers both the business's taxes and your personal estimated payments. Even on payroll with withholding, you keep the account so the business reimburses you and the pain doesn't feel like a pay cut.`);
+      reasons.push(`<strong>Tax stays at 15%.</strong> This covers both the business's taxes and your personal estimated payments. Even on payroll with withholding, you keep the account so the business reimburses you. Behaviorally, that prevents tax from feeling like a pay cut.`);
 
       if (this.answers.hasDebt) {
-        reasons.push(`<strong>You said you have debt.</strong> Your quarterly Profit distribution flips to debt-snowball mode. 95% of each quarter's Profit balance attacks your smallest debt. 5% is yours to celebrate, so the habit doesn't die. Once debt is gone, switch back to standard 50/50.`);
+        reasons.push(`<strong>You said you have debt.</strong> Your quarterly Profit distribution flips to debt-snowball mode. 95% of each quarter's Profit balance attacks your smallest debt. 5% is yours to celebrate, so the habit doesn't die. Once debt is gone, switch back to the standard 50/50 owner-bonus rule.`);
       }
 
       if (this.answers.subPercent >= 20) {
         reasons.push(`<strong>Your sub costs are ${this.answers.subPercent}% of a typical job.</strong> That's high enough that your topline numbers will eventually mislead you. In 90 days, consider adding a Materials &amp; Subs account so your percentages run on Real Revenue, not gross.`);
       }
 
+      reasons.push(`<strong>The next step is the rhythm.</strong> Your accounts get distributed twice a month (the 10th and 25th) and your Profit account gets distributed to you quarterly. We'll walk through the operational details on the next two screens.`);
+
       return reasons;
     },
 
     sanityWarnings() {
       const warnings = [];
-
-      // Personal nut check
       if (this.answers.workType === 'fulltime' && this.answers.monthlyNut > 0) {
         const annualOwnerPay = this.estimatedRevenue() * (this.reco.ownerPay / 100);
         const annualNut = this.answers.monthlyNut * 12;
         if (annualOwnerPay < annualNut) {
           const gap = annualNut - annualOwnerPay;
-          warnings.push(`<strong>Pricing red flag:</strong> at ${this.reco.ownerPay}% Owner's Comp, your projected annual paycheck (~${this.formatMoney(annualOwnerPay)}) doesn't cover your projected ${this.formatMoney(annualNut)}/yr personal expenses. Gap of ${this.formatMoney(gap)}. Either revenue needs to climb, your minimum nut needs to drop, or you need outside runway. Profit First will surface this. It won't fix it.`);
+          warnings.push(`<strong>Pricing red flag:</strong> at ${this.reco.ownerPay}% Owner's Comp, your projected annual paycheck (~${this.formatMoney(annualOwnerPay)}) doesn't cover your ${this.formatMoney(annualNut)}/yr personal expenses. Gap of ${this.formatMoney(gap)}. Either revenue needs to climb, your minimum nut needs to drop, or you need outside runway. Profit First will surface this. It won't fix it.`);
         }
       }
-
       return warnings;
     },
 
@@ -752,9 +953,7 @@ function profitFirstApp() {
       return map[this.answers.revenue] || 0;
     },
 
-    opexTooLow() {
-      return this.opexComputed() < 25;
-    },
+    opexTooLow() { return this.opexComputed() < 25; },
 
     formatMoney(n) {
       if (!isFinite(n)) return '$0';
